@@ -11,7 +11,7 @@ interface Stats {
   exp: number;
 }
 
-export class Entity {
+export interface Entity {
   name: string;
   description?: string;
   label?: string;
@@ -28,9 +28,8 @@ export class Entity {
   wantsToMove?: "up" | "down" | "left" | "right";
 }
 
-
 // Items
-class Item {
+export interface Item {
   id: string;
   name: string;
   description: string;

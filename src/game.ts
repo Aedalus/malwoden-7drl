@@ -6,8 +6,8 @@ import { MovementSystem } from "./systems/MovementSystem";
 import { Log } from "./logs";
 
 // Globals
-let terminal: Terminal.RetroTerminal = undefined;
-let mapTerminal: Terminal.PortTerminal = undefined;
+let terminal: Terminal.RetroTerminal;
+let mapTerminal: Terminal.PortTerminal;
 
 const map_width = 52;
 const map_height = 38;

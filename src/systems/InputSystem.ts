@@ -37,8 +37,8 @@ export class InputSystem {
 
   // Returns true if player input was detected
   loop(level: Level): boolean {
-    if (this.currentPlayerInput === PlayerInput.NONE) return;
-    const player = level.entites.find((x) => x.player);
+    if (this.currentPlayerInput === PlayerInput.NONE) return false;
+    const player = level.entites.find((x) => x.player)!;
 
     let wasInput = false;
 
