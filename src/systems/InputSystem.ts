@@ -35,22 +35,29 @@ export class InputSystem {
     keyboard.setContext(movement);
   }
 
-  loop(level: Level) {
-    console.log(this.currentPlayerInput);
+  // Returns true if player input was detected
+  loop(level: Level): boolean {
     if (this.currentPlayerInput === PlayerInput.NONE) return;
     const player = level.entites.find((x) => x.player);
 
+    let wasInput = false;
+
     if (this.currentPlayerInput === PlayerInput.UP) {
       player.wantsToMove = "up";
+      wasInput = true;
     } else if (this.currentPlayerInput === PlayerInput.DOWN) {
       player.wantsToMove = "down";
+      wasInput = true;
     } else if (this.currentPlayerInput === PlayerInput.RIGHT) {
       player.wantsToMove = "right";
+      wasInput = true;
     } else if (this.currentPlayerInput === PlayerInput.LEFT) {
       player.wantsToMove = "left";
+      wasInput = true;
     }
 
     // Make sure we reset the player input
     this.currentPlayerInput = PlayerInput.NONE;
+    return wasInput;
   }
 }

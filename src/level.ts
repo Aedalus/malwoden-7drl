@@ -47,8 +47,8 @@ export function getNewLevel(width: number, height: number): Level {
     aliveValue: Terrain.tree,
     deadValue: Terrain.none,
   });
-  map.randomize(0.7);
-  map.doSimulationStep();
+  map.randomize(0.63);
+  map.doSimulationStep(3);
   map.connect();
 
   const open: Vector2[] = [];

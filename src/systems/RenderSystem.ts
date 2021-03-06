@@ -1,15 +1,15 @@
 import { Terminal, GUI } from "malwoden";
 import { Level, TerrainGlyphs } from "../level";
+import { Log } from "../logs";
 
 interface RenderSystemContext {
   level: Level;
   terminal: Terminal.RetroTerminal;
   mapTerminal: Terminal.PortTerminal;
-  logs: string[];
 }
 
 export class RenderSystem {
-  loop({ terminal, mapTerminal, level, logs }: RenderSystemContext) {
+  loop({ terminal, mapTerminal, level }: RenderSystemContext) {
     // Rendering
     terminal.clear();
 
@@ -40,8 +40,8 @@ export class RenderSystem {
       height: 9,
     });
 
-    for (let i = 0; i < logs.length; i++) {
-      terminal.writeAt({ x: 1, y: 42 + i }, logs[i]);
+    for (let i = 0; i < Log.length(); i++) {
+      terminal.writeAt({ x: 1, y: 42 + i }, Log.entries[i]);
     }
 
     // Draw Map

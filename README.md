@@ -3,8 +3,8 @@
 - Collisions (Josh)
 - Add more enemies (Josh)
 - Stats (Josh)
-- Global State (Alex)
-- Log System (Alex)
+  <!-- - Global State (Alex) -->
+  <!-- - Log System (Alex) -->
 
 - Multiple Levels
 - Win condition
