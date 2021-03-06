@@ -66,10 +66,9 @@ export function loop() {
   }
 
   // Render comes very last
-  if (currentGameState !== GameState.AWAITING_INPUT)
-    renderSystem.loop({
-      level,
-      mapTerminal,
-      terminal,
-    });
+  renderSystem.loop({
+    level,
+    mapTerminal,
+    terminal,
+  });
 }

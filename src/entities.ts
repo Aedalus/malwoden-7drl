@@ -4,6 +4,7 @@ import { Glyph, Vector2, Util } from "malwoden";
 export class Entity {
   name: string;
   description?: string;
+  label?: string;
 
   position: Vector2;
   glyph: Glyph;

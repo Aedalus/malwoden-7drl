@@ -1,4 +1,12 @@
-import { Terminal, GUI } from "malwoden";
+import {
+  Terminal,
+  GUI,
+  Input,
+  Glyph,
+  Color,
+  CharCode,
+  Vector2,
+} from "malwoden";
 import { Level, TerrainGlyphs } from "../level";
 import { Log } from "../logs";
 
@@ -9,6 +17,8 @@ interface RenderSystemContext {
 }
 
 export class RenderSystem {
+  mouse = new Input.MouseHandler();
+
   loop({ terminal, mapTerminal, level }: RenderSystemContext) {
     // Rendering
     terminal.clear();
@@ -74,6 +84,55 @@ export class RenderSystem {
     //   // Player Entity
     //   mapTerminal.drawGlyph(player, Glyph.fromCharCode(CharCode.at, Color.Yellow));
 
+    // Render Labels
+    const mousePos = this.mouse.getPos();
+    const termPos = terminal.pixelToChar(mousePos);
+
+    // Offset for portTerminal
+
+    // World Position offset for port terminal
+    const worldPos = {
+      x: termPos.x - 17,
+      y: termPos.y - 1,
+    };
+
+    // console.log(worldPos);
+    const selectedEntity = level.entites.find((e) => {
+      return e.position.x === worldPos.x && e.position.y === worldPos.y;
+    });
+
+    if (selectedEntity) {
+      drawLabel(terminal, termPos, selectedEntity.name);
+    }
+
+    // if (termPos.x > 16 && termPos.y > 0 && termPos.x < 69 && termPos.y < 39) {
+    //   terminal.drawGlyph(termPos, new Glyph("", undefined, Color.White));
+    // }
+
     terminal.render();
   }
+}
+
+function drawLabel(
+  terminal: Terminal.BaseTerminal,
+  pos: Vector2,
+  text: string
+) {
+  const textPos = {
+    x: pos.x + 3,
+    y: pos.y,
+  };
+  terminal.drawCharCode(
+    { x: pos.x + 1, y: pos.y },
+    CharCode.leftwardsArrow,
+    Color.DarkSlateGray,
+    Color.White
+  );
+  terminal.drawCharCode(
+    { x: pos.x + 2, y: pos.y },
+    CharCode.blackSquare,
+    Color.White,
+    Color.DarkSlateGray
+  );
+  terminal.writeAt(textPos, text, Color.White, Color.DarkSlateGray);
 }
