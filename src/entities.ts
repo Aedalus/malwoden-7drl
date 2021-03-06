@@ -1,6 +1,16 @@
-import { Glyph, Vector2, Util } from "malwoden";
+import { Glyph, Vector2 } from "malwoden";
 
 // Entity
+
+interface Stats {
+  hp: number;
+  level: number;
+  attack: number;
+  speed: number;
+  armor: number;
+  exp: number;
+}
+
 export class Entity {
   name: string;
   description?: string;
@@ -17,9 +27,6 @@ export class Entity {
   wantsToMove?: "up" | "down" | "left" | "right";
 }
 
-class Stats {
-  hp: number;
-}
 
 // Items
 class Item {
