@@ -11,13 +11,14 @@ export function getMantis(options: EntityOptions): Entity {
     position: options.position,
     renderPriority: 2,
     glyph: Glyph.fromCharCode(CharCode.mUpper, Color.Red),
+    ai: "wander",
     stats: {
       hp: 3,
       level: 1,
       attack: 2,
       armor: 1,
       speed: 2,
-      exp: 0
+      exp: 0,
     },
   };
 }
@@ -35,7 +36,17 @@ export function getPlayer(options: EntityOptions): Entity {
       attack: 3,
       armor: 1,
       speed: 1,
-      exp: 0
+      exp: 0,
     },
+  };
+}
+
+export function getStairs(options: EntityOptions): Entity {
+  return {
+    name: "Stairs",
+    position: options.position,
+    renderPriority: 3,
+    glyph: Glyph.fromCharCode(CharCode.downwardsArrow, Color.Cyan),
+    stairs: true,
   };
 }

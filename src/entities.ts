@@ -1,4 +1,5 @@
 import { Glyph, Vector2 } from "malwoden";
+import { Direction } from "./globals";
 
 // Entity
 
@@ -15,17 +16,19 @@ export interface Entity {
   name: string;
   description?: string;
   label?: string;
+  ai?: "wander";
 
   position: Vector2;
   glyph: Glyph;
   renderPriority: number;
 
   player?: boolean;
+  stairs?: boolean;
   stats?: Stats;
   trapDamage?: number;
   droppedItem?: Item;
   inventory?: Map<number, Item>;
-  wantsToMove?: "up" | "down" | "left" | "right";
+  wantsToMove?: Direction;
 }
 
 // Items

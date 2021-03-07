@@ -1,30 +1,23 @@
 import { Terminal } from "malwoden";
-import { getNewLevel } from "./level";
 import { RenderSystem } from "./systems/RenderSystem";
 import { InputSystem } from "./systems/InputSystem";
 import { MovementSystem } from "./systems/MovementSystem";
 import { Log } from "./logs";
+import { GameState } from "./globals";
+import { AISystem } from "./systems/AISystem";
+import { StairSystem } from "./systems/StairSystem";
+import { map_width, map_height, state } from "./globals";
 
 // Globals
 let terminal: Terminal.RetroTerminal;
 let mapTerminal: Terminal.PortTerminal;
 
-const map_width = 52;
-const map_height = 38;
-
-let level = getNewLevel(map_width, map_height);
-
 // Systems
 const renderSystem = new RenderSystem();
 const inputSystem = new InputSystem();
 const movementSystem = new MovementSystem();
-
-enum GameState {
-  GAME_START,
-  PLAYER_TURN,
-  ENEMY_TURN,
-  AWAITING_INPUT,
-}
+const aiSystem = new AISystem();
+const stairSystem = new StairSystem();
 
 let currentGameState = GameState.GAME_START;
 
@@ -36,7 +29,7 @@ export function init(term: Terminal.RetroTerminal) {
 
   // Render once to start
   renderSystem.loop({
-    level,
+    level: state.level,
     mapTerminal,
     terminal,
   });
@@ -45,12 +38,17 @@ export function init(term: Terminal.RetroTerminal) {
 export function loop() {
   // Input System
   if (currentGameState === GameState.AWAITING_INPUT) {
-    const wasInput = inputSystem.loop(level);
+    const wasInput = inputSystem.loop(state.level);
     if (wasInput) currentGameState = GameState.PLAYER_TURN;
   }
 
   // Logic Systems
-  movementSystem.loop(level);
+  movementSystem.loop(state.level);
+  stairSystem.loop(state.level);
+
+  if (currentGameState === GameState.ENEMY_TURN) {
+    aiSystem.loop(state.level);
+  }
 
   // Transition between needed states
   // Keep logic above, this is just for automatic
@@ -61,13 +59,12 @@ export function loop() {
     Log.addEntry("Player Turn!");
     currentGameState = GameState.ENEMY_TURN;
   } else if (currentGameState === GameState.ENEMY_TURN) {
-    Log.addEntry("Enemy Turn!");
     currentGameState = GameState.AWAITING_INPUT;
   }
 
   // Render comes very last
   renderSystem.loop({
-    level,
+    level: state.level,
     mapTerminal,
     terminal,
   });
