@@ -17,6 +17,7 @@ export interface Entity {
   description?: string;
   label?: string;
   ai?: "wander";
+  enemy?: boolean;
 
   position: Vector2;
   glyph: Glyph;
@@ -24,6 +25,7 @@ export interface Entity {
 
   player?: boolean;
   stairs?: boolean;
+  restart?: boolean;
   stats?: Stats;
   trapDamage?: number;
   droppedItem?: Item;
@@ -36,6 +38,7 @@ export interface Item {
   id: string;
   name: string;
   description: string;
+  trap?: string;
 
   canEquip: boolean;
   equipSlot?: string;

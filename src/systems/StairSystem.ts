@@ -12,13 +12,24 @@ export class StairSystem {
         s.position.x === player?.position.x &&
         s.position.y === player.position.y
       ) {
-        Log.addEntry("Descending the stairs");
-        const newLevel = getNewLevel(map_width, map_height, false);
-        newLevel.addEntity(player);
-        state.level = newLevel;
-        state.levelCount++;
-        player.position.x = newLevel.startPos.x;
-        player.position.y = newLevel.startPos.y;
+        if (s.restart) {
+          Log.addEntry("You are reborn. Let the snailing continue!");
+          const newLevel = getNewLevel(map_width, map_height, false);
+          newLevel.addEntity(player);
+          state.level = newLevel;
+          state.levelCount = 1;
+          player.position.x = newLevel.startPos.x;
+          player.position.y = newLevel.startPos.y;
+
+        } else {
+          Log.addEntry("Descending the stairs");
+          const newLevel = getNewLevel(map_width, map_height, false);
+          newLevel.addEntity(player);
+          state.level = newLevel;
+          state.levelCount++;
+          player.position.x = newLevel.startPos.x;
+          player.position.y = newLevel.startPos.y;
+        }
       }
     }
   }

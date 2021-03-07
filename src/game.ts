@@ -7,6 +7,7 @@ import { GameState } from "./globals";
 import { AISystem } from "./systems/AISystem";
 import { StairSystem } from "./systems/StairSystem";
 import { CacheSystem } from "./systems/CacheSystem";
+import { CombatSystem } from "./systems/CombatSystem"
 
 import { map_width, map_height, state } from "./globals";
 
@@ -21,6 +22,7 @@ const movementSystem = new MovementSystem();
 const aiSystem = new AISystem();
 const stairSystem = new StairSystem();
 const cacheSystem = new CacheSystem();
+const combatSystem = new CombatSystem();
 
 let currentGameState = GameState.GAME_START;
 
@@ -51,6 +53,7 @@ export function loop() {
   // Logic Systems
   movementSystem.loop(state.level);
   stairSystem.loop(state.level);
+  combatSystem.loop(state.level);
 
   if (currentGameState === GameState.ENEMY_TURN) {
     aiSystem.loop(state.level);
