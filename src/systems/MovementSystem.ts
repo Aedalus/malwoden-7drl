@@ -1,4 +1,3 @@
-import { createPortal } from "react-dom";
 import { Level } from "../level";
 
 const directionVectors = {
