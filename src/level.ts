@@ -27,11 +27,14 @@ export const TerrainGlyphs: { [e in Terrain]: Glyph | undefined } = {
 };
 
 export class Level {
-  entites: Entity[] = [];
+  startPos: Vector2;
+  entites: Entity[];
   map: Util.Table<Terrain>;
 
-  constructor(map: Util.Table<Terrain>) {
+  constructor(map: Util.Table<Terrain>, entities: Entity[], startPos: Vector2) {
     this.map = map;
+    this.entites = entities;
+    this.startPos = startPos;
   }
 
   addEntity(e: Entity) {
@@ -39,7 +42,11 @@ export class Level {
   }
 }
 
-export function getNewLevel(width: number, height: number): Level {
+export function getNewLevel(
+  width: number,
+  height: number,
+  createPlayer: boolean
+): Level {
   // Generate Terrain
   const map_width = width;
   const map_height = height;
@@ -60,19 +67,23 @@ export function getNewLevel(width: number, height: number): Level {
 
   const rng = new Rand.AleaRNG();
   const randomOpen = rng.shuffle(open);
-
-  // Create level
-  const level = new Level(map.table);
+  const entities: Entity[] = [];
 
   // Generate Entities
   const enemy_count = 10;
   for (let i = 0; i < enemy_count; i++) {
-    level.addEntity(Prefab.getMantis({ position: randomOpen[i] }));
+    entities.push(Prefab.getMantis({ position: randomOpen[i] }));
   }
 
-  // Generate Player
+  // Generate Player if applicable, start pos either way
+  const startPos = randomOpen[10];
+  if (createPlayer) {
+    entities.push(Prefab.getPlayer({ position: startPos }));
+  }
 
-  level.addEntity(Prefab.getPlayer({ position: randomOpen[10] }));
+  // Generate Stairs
+  entities.push(Prefab.getStairs({ position: randomOpen[11] }));
 
-  return level;
+  // Create level
+  return new Level(map.table, entities, startPos);
 }

@@ -1,14 +1,7 @@
-import {
-  Terminal,
-  GUI,
-  Input,
-  Glyph,
-  Color,
-  CharCode,
-  Vector2,
-} from "malwoden";
+import { Terminal, GUI, Input, Color, CharCode, Vector2 } from "malwoden";
 import { Level, TerrainGlyphs } from "../level";
 import { Log } from "../logs";
+import { state } from "../globals";
 
 interface RenderSystemContext {
   level: Level;
@@ -19,7 +12,7 @@ interface RenderSystemContext {
 export class RenderSystem {
   mouse = new Input.MouseHandler();
 
-  loop({ terminal, mapTerminal, level }: RenderSystemContext) {
+  loop({ terminal, mapTerminal }: RenderSystemContext) {
     // Rendering
     terminal.clear();
 
@@ -31,6 +24,7 @@ export class RenderSystem {
       height: 39,
     });
 
+    terminal.writeAt({ x: 2, y: 2 }, `Level: ${state.levelCount}`);
     // HP
     //   terminal.writeAt({ x: 2, y: 2 }, `HP : ${player.hp}/10`, Color.Red);
     //   terminal.writeAt({ x: 2, y: 4 }, `Gold : ${player.coins}`, Color.Yellow);
@@ -55,9 +49,9 @@ export class RenderSystem {
     }
 
     // Draw Map
-    for (let x = 0; x < level.map.width; x++) {
-      for (let y = 0; y < level.map.height; y++) {
-        const terrain = level.map.get({ x, y });
+    for (let x = 0; x < state.level.map.width; x++) {
+      for (let y = 0; y < state.level.map.height; y++) {
+        const terrain = state.level.map.get({ x, y });
 
         if (terrain) {
           const glyph = TerrainGlyphs[terrain];
@@ -69,7 +63,7 @@ export class RenderSystem {
     }
 
     // Draw Entities
-    const sortedEntities = level.entites.sort(
+    const sortedEntities = state.level.entites.sort(
       (a, b) => b.renderPriority - a.renderPriority
     );
     for (let e of sortedEntities) {
@@ -97,7 +91,7 @@ export class RenderSystem {
     };
 
     // console.log(worldPos);
-    const selectedEntity = level.entites.find((e) => {
+    const selectedEntity = state.level.entites.find((e) => {
       return e.position.x === worldPos.x && e.position.y === worldPos.y;
     });
 
@@ -105,6 +99,7 @@ export class RenderSystem {
       drawLabel(terminal, termPos, selectedEntity.name);
     }
 
+    // If we wanted a cursor
     // if (termPos.x > 16 && termPos.y > 0 && termPos.x < 69 && termPos.y < 39) {
     //   terminal.drawGlyph(termPos, new Glyph("", undefined, Color.White));
     // }

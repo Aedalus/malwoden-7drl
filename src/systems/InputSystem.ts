@@ -1,4 +1,5 @@
 import { Input } from "malwoden";
+import { Direction } from "../globals";
 import { Level } from "../level";
 
 enum PlayerInput {
@@ -43,16 +44,16 @@ export class InputSystem {
     let wasInput = false;
 
     if (this.currentPlayerInput === PlayerInput.UP) {
-      player.wantsToMove = "up";
+      player.wantsToMove = Direction.UP;
       wasInput = true;
     } else if (this.currentPlayerInput === PlayerInput.DOWN) {
-      player.wantsToMove = "down";
+      player.wantsToMove = Direction.DOWN;
       wasInput = true;
     } else if (this.currentPlayerInput === PlayerInput.RIGHT) {
-      player.wantsToMove = "right";
+      player.wantsToMove = Direction.RIGHT;
       wasInput = true;
     } else if (this.currentPlayerInput === PlayerInput.LEFT) {
-      player.wantsToMove = "left";
+      player.wantsToMove = Direction.LEFT;
       wasInput = true;
     }
 
