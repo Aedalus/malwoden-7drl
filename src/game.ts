@@ -6,6 +6,8 @@ import { Log } from "./logs";
 import { GameState } from "./globals";
 import { AISystem } from "./systems/AISystem";
 import { StairSystem } from "./systems/StairSystem";
+import { CacheSystem } from "./systems/CacheSystem";
+
 import { map_width, map_height, state } from "./globals";
 
 // Globals
@@ -18,6 +20,7 @@ const inputSystem = new InputSystem();
 const movementSystem = new MovementSystem();
 const aiSystem = new AISystem();
 const stairSystem = new StairSystem();
+const cacheSystem = new CacheSystem();
 
 let currentGameState = GameState.GAME_START;
 
@@ -36,6 +39,9 @@ export function init(term: Terminal.RetroTerminal) {
 }
 
 export function loop() {
+  // Cache System should always run first to build up cache
+  cacheSystem.loop();
+
   // Input System
   if (currentGameState === GameState.AWAITING_INPUT) {
     const wasInput = inputSystem.loop(state.level);

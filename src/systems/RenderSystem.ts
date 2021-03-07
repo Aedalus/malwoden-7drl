@@ -91,12 +91,9 @@ export class RenderSystem {
     };
 
     // console.log(worldPos);
-    const selectedEntity = state.level.entites.find((e) => {
-      return e.position.x === worldPos.x && e.position.y === worldPos.y;
-    });
-
-    if (selectedEntity) {
-      drawLabel(terminal, termPos, selectedEntity.name);
+    const selectedEntities = state.posCache.get(`${worldPos.x}:${worldPos.y}`);
+    if (selectedEntities?.length) {
+      drawLabel(terminal, termPos, selectedEntities[0].name);
     }
 
     // If we wanted a cursor
