@@ -23,8 +23,24 @@ export class RenderSystem {
       width: 15,
       height: 39,
     });
+    const player = state.level.entites.find(x => x.player);
+    if (player) {
+      if (player.stats) {
+        terminal.writeAt({ x: 2, y: 6 }, `level: ${player.stats.level}`);
 
-    terminal.writeAt({ x: 2, y: 2 }, `Level: ${state.levelCount}`);
+        terminal.writeAt({ x: 2, y: 8 }, `hp: ${player.stats.hp}`);
+
+        terminal.writeAt({ x: 2, y: 10 }, `attack: ${player.stats.attack}`);
+
+
+        terminal.writeAt({ x: 2, y: 12 }, `armor: ${player.stats.armor}`);
+
+        terminal.writeAt({ x: 2, y: 14 }, `speed: ${player.stats.speed}`);
+      }
+    }
+
+
+    terminal.writeAt({ x: 2, y: 2 }, `Stage: ${state.levelCount}`);
     // HP
     //   terminal.writeAt({ x: 2, y: 2 }, `HP : ${player.hp}/10`, Color.Red);
     //   terminal.writeAt({ x: 2, y: 4 }, `Gold : ${player.coins}`, Color.Yellow);

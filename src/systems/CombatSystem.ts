@@ -1,8 +1,7 @@
 import { Entity } from "../entities";
-import { Level, getNewLevel, getEndLevel } from "../level";
+import { Level, getEndLevel } from "../level";
 import { Log } from "../logs";
 import { state } from "../globals";
-
 
 export class CombatSystem {
 
@@ -11,12 +10,11 @@ export class CombatSystem {
             Log.addEntry('You have died.');
             const endLevel = getEndLevel();
             state.level = endLevel;
-            // const newLevel = getNewLevel(10, 10, false);
-            // newLevel.addEntity(futureCorpse);
-            // state.level = newLevel;
         }
         futureCorpse.enemy = false;
+        futureCorpse.enemyCollision = false;
         futureCorpse.ai = undefined;
+
         return futureCorpse;
     }
 
@@ -25,6 +23,7 @@ export class CombatSystem {
             if (check.stats.hp > 0) {
                 return true;
             }
+            console.log('making corpse: ', check);
             this.makeCorpse(check);
             return false;
         }
@@ -44,37 +43,41 @@ export class CombatSystem {
         else return 0;
     }
 
-    private combatSteps(enemy: Entity, player: Entity) {
+    combatSteps(enemy: Entity, player: Entity) {
         //todo : add in armor calc for combat.
         let attacker;
         let defender;
         //ensure that player and enemy have stats.
-        if (enemy.stats && player.stats) {
-            // determine who goes first
-            if (enemy.stats.speed > player.stats.speed) {
-                attacker = enemy;
-                defender = player;
-            } else {
-                attacker = player;
-                defender = enemy;
-            }
-            //attacker and defender has been determined.                
-            if (attacker.stats && defender.stats) { //renew the check to make typescript happy.
-                let damage = this.calcPower(attacker, defender)
-                defender.stats.hp = defender.stats.hp - damage;
-                Log.addEntry(attacker.name + ' hits ' + defender.name + ' for ' + damage);
-                Log.addEntry(defender.name + ' has ' + defender.stats.hp + ' left.');
-                if (this.isAlive(defender)) {
-                    let damage = this.calcPower(defender, attacker)
-                    attacker.stats.hp = attacker.stats.hp - damage;
-                    Log.addEntry(defender.name + ' hits ' + attacker.name + ' for ' + damage);
-                    Log.addEntry(attacker.name + ' has ' + attacker.stats.hp + ' left.');
-                    this.isAlive(attacker);
+        if (enemy.enemy || player.enemy === true) {
+            if (enemy.stats && player.stats) {
+                // determine who goes first
+                if (enemy.stats.speed > player.stats.speed) {
+                    attacker = enemy;
+                    defender = player;
+                } else {
+                    attacker = player;
+                    defender = enemy;
+                }
+                //attacker and defender has been determined.                
+                if (attacker.stats && defender.stats) { //renew the check to make typescript happy.
+                    let damage = this.calcPower(attacker, defender)
+                    defender.stats.hp = defender.stats.hp - damage;
+                    Log.addEntry(attacker.name + ' hits ' + defender.name + ' for ' + damage);
+                    Log.addEntry(defender.name + ' has ' + defender.stats.hp + ' left.');
+                    this.isAlive(defender);
+                    if (this.isAlive(defender)) {
+                        let damage = this.calcPower(defender, attacker)
+                        attacker.stats.hp = attacker.stats.hp - damage;
+                        Log.addEntry(defender.name + ' hits ' + attacker.name + ' for ' + damage);
+                        Log.addEntry(attacker.name + ' has ' + attacker.stats.hp + ' left.');
+                        this.isAlive(attacker);
+                    }
                 }
             }
         }
     }
 
+    // possibly cruft now that combat system is impliemented in movement system. Don't really like it.
     loop(level: Level) {
         const player = level.entites.find((x) => x.player);
         const enemy = level.entites.filter((x) => x.enemy);
@@ -91,7 +94,6 @@ export class CombatSystem {
                         this.combatSteps(s, player);
                     }
                 }
-
             }
         }
     }

@@ -27,6 +27,10 @@ enum Terrain {
   I = 96,
 }
 
+enum Monster {
+  mantis = 101,
+}
+
 export const TerrainGlyphs: { [e in Terrain]: Glyph | undefined } = {
   [Terrain.none]: undefined,
   [Terrain.tree]: Glyph.fromCharCode(CharCode.blackSpadeSuit, Color.Green),
@@ -72,8 +76,6 @@ export function getEndLevel() {
 
   entities.push(Prefab.getPlayer({ position: { x: 16, y: 18 } }));
   entities.push(Prefab.getRestartStairs({ position: { x: 38, y: 18 } }));
-
-
 
   table.fill(0);
   table.set({ x: 14, y: 18 }, 89);

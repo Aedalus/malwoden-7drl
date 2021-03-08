@@ -18,6 +18,7 @@ export interface Entity {
   label?: string;
   ai?: "wander";
   enemy?: boolean;
+  enemyCollision?: boolean
 
   position: Vector2;
   glyph: Glyph;
