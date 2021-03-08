@@ -1,11 +1,10 @@
 import { Vector2 } from "malwoden";
 import { Direction, state } from "../globals";
 import { Level } from "../level";
-import { CombatSystem } from "./CombatSystem"
 import { Entity } from "../entities";
+import { dealDamage } from "../damageFunction"
 
 
-const combatSystem = new CombatSystem();
 const directionVectors = {
   [Direction.UP]: { x: 0, y: -1 },
   [Direction.DOWN]: { x: 0, y: 1 },
@@ -35,17 +34,19 @@ export class MovementSystem {
           if (enemy !== undefined) {
             const curEnemy = enemy[0];
 
-            if (player) {
+            if (player && player.stats) { // typescript needs to confirm that there is both a player and stats otherwise it can be undefined.
               if (e.name === 'Mal') {
                 if (curEnemy.enemy) {
-                  //this makes a call to calc damage.
-                  combatSystem.combatSteps(player, curEnemy);
+                  //this makes a call to notify damage.
+                  dealDamage(player, curEnemy)
+                  // combatSystem.combatSteps(player, curEnemy);
                   collisionCheck = true;
                 }
               }
-              if (curEnemy.name === 'Mal') {
+              if (curEnemy.name === 'Mal' && curEnemy.stats) { // confirms that the enemy is attacking the player and has stats to do so with.
                 collisionCheck = true;
-                combatSystem.combatSteps(curEnemy, e);
+                // combatSystem.combatSteps(curEnemy, e);
+                dealDamage(curEnemy, player)
               }
             }
           }
@@ -65,6 +66,11 @@ export class MovementSystem {
         e.position.x += direction.x;
         e.position.y += direction.y;
         e.wantsToMove = undefined;
+
+        // Recalculate view if necessary
+        if (e.vision && e.viewShed) {
+          e.viewShed.dirty = true;
+        }
       }
     }
   }
