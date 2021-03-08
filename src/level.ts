@@ -18,7 +18,11 @@ enum Terrain {
 }
 
 export const TerrainGlyphs: { [e in Terrain]: Glyph | undefined } = {
-  [Terrain.none]: undefined,
+  [Terrain.none]: Glyph.fromCharCode(
+    CharCode.blackSquare,
+    Color.Black,
+    Color.Black
+  ),
   [Terrain.tree]: Glyph.fromCharCode(CharCode.blackSpadeSuit, Color.Green),
   [Terrain.mountain]: Glyph.fromCharCode(
     CharCode.blackUpPointingTriangle,
@@ -26,15 +30,43 @@ export const TerrainGlyphs: { [e in Terrain]: Glyph | undefined } = {
   ),
 };
 
+export const FOWTerrainGlyphs: { [e in Terrain]: Glyph | undefined } = {
+  [Terrain.none]: Glyph.fromCharCode(
+    CharCode.blackSquare,
+    Color.Black.blendPercent(Color.DimGray, 50),
+    Color.Black.blendPercent(Color.DimGray, 50)
+  ),
+  [Terrain.tree]: Glyph.fromCharCode(
+    CharCode.blackSpadeSuit,
+    Color.Black.blendPercent(Color.DimGray, 20),
+    Color.Black.blendPercent(Color.DimGray, 50)
+  ),
+  [Terrain.mountain]: Glyph.fromCharCode(
+    CharCode.blackUpPointingTriangle,
+    Color.DarkGray
+  ),
+};
+
+// Used by View System to calculate FOV
+export const TerrainBlocksVision: { [e in Terrain]: boolean } = {
+  [Terrain.none]: false,
+  [Terrain.tree]: true,
+  [Terrain.mountain]: true,
+};
+
 export class Level {
   startPos: Vector2;
   entites: Entity[];
   map: Util.Table<Terrain>;
+  fow: boolean;
+  fowVisited: Util.Table<boolean>;
 
   constructor(map: Util.Table<Terrain>, entities: Entity[], startPos: Vector2) {
     this.map = map;
     this.entites = entities;
     this.startPos = startPos;
+    this.fow = true;
+    this.fowVisited = new Util.Table(this.map.width, this.map.height);
   }
 
   addEntity(e: Entity) {

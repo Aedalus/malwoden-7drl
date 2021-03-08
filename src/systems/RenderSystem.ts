@@ -1,5 +1,5 @@
 import { Terminal, GUI, Input, Color, CharCode, Vector2 } from "malwoden";
-import { Level, TerrainGlyphs } from "../level";
+import { FOWTerrainGlyphs, Level, TerrainGlyphs } from "../level";
 import { Log } from "../logs";
 import { state } from "../globals";
 
@@ -15,6 +15,7 @@ export class RenderSystem {
   loop({ terminal, mapTerminal }: RenderSystemContext) {
     // Rendering
     terminal.clear();
+    const player = state.level.entites.find((x) => x.player);
 
     // Player Box
     GUI.box(terminal, {
@@ -48,13 +49,30 @@ export class RenderSystem {
       terminal.writeAt({ x: 1, y: 42 + i }, Log.entries[i]);
     }
 
-    // Draw Map
+    // -------------------------------------------------------------------------
+    // Draw World
+    // -------------------------------------------------------------------------
     for (let x = 0; x < state.level.map.width; x++) {
       for (let y = 0; y < state.level.map.height; y++) {
+        const v = { x, y };
         const terrain = state.level.map.get({ x, y });
 
-        if (terrain) {
-          const glyph = TerrainGlyphs[terrain];
+        const isVisible =
+          state.level.fowVisited.isInBounds(v) && state.level.fowVisited.get(v);
+
+        if (!isVisible) {
+          mapTerminal.drawCharCode(
+            v,
+            CharCode.blackSquare,
+            Color.DimGray.blendPercent(Color.Black, 70),
+            Color.DimGray.blendPercent(Color.Black, 70)
+          );
+          continue;
+        }
+
+        // Draw FOW Terrain
+        if (terrain !== undefined) {
+          const glyph = FOWTerrainGlyphs[terrain];
           if (glyph) {
             mapTerminal.drawGlyph({ x, y }, glyph);
           }
@@ -62,21 +80,28 @@ export class RenderSystem {
       }
     }
 
-    // Draw Entities
-    const sortedEntities = state.level.entites.sort(
-      (a, b) => b.renderPriority - a.renderPriority
-    );
-    for (let e of sortedEntities) {
-      mapTerminal.drawGlyph(e.position, e.glyph);
-    }
+    // Only draw entities in the player's viewshed
+    player?.viewShed?.area.forEach((pos) => {
+      const terrain = state.level.map.get(pos);
+      const entities = state.posCache.get(`${pos.x}:${pos.y}`);
 
-    //   // Coin
-    //   mapTerminal.drawGlyph(
-    //     coin,
-    //     Glyph.fromCharCode(CharCode.oLower, Color.Yellow)
-    //   );
-    //   // Player Entity
-    //   mapTerminal.drawGlyph(player, Glyph.fromCharCode(CharCode.at, Color.Yellow));
+      // Draw Revealed Terrain
+      if (terrain !== undefined) {
+        const glyph = TerrainGlyphs[terrain];
+        if (glyph) {
+          mapTerminal.drawGlyph(pos, glyph);
+        }
+      }
+      // Draw entities
+      if (entities?.length) {
+        const sortedEntities = entities.sort(
+          (a, b) => b.renderPriority - a.renderPriority
+        );
+        for (let e of sortedEntities) {
+          mapTerminal.drawGlyph(e.position, e.glyph);
+        }
+      }
+    });
 
     // Render Labels
     const mousePos = this.mouse.getPos();
@@ -90,16 +115,16 @@ export class RenderSystem {
       y: termPos.y - 1,
     };
 
-    // console.log(worldPos);
-    const selectedEntities = state.posCache.get(`${worldPos.x}:${worldPos.y}`);
-    if (selectedEntities?.length) {
-      drawLabel(terminal, termPos, selectedEntities[0].name);
+    // Only draw the label if the player can see it
+    if (player?.viewShed?.area.has(`${worldPos.x}:${worldPos.y}`)) {
+      // console.log(worldPos);
+      const selectedEntities = state.posCache.get(
+        `${worldPos.x}:${worldPos.y}`
+      );
+      if (selectedEntities?.length) {
+        drawLabel(terminal, termPos, selectedEntities[0].name);
+      }
     }
-
-    // If we wanted a cursor
-    // if (termPos.x > 16 && termPos.y > 0 && termPos.x < 69 && termPos.y < 39) {
-    //   terminal.drawGlyph(termPos, new Glyph("", undefined, Color.White));
-    // }
 
     terminal.render();
   }
