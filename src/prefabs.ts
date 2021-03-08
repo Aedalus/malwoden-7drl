@@ -13,7 +13,7 @@ export function getMantis(options: EntityOptions): Entity {
     renderPriority: 2,
     glyph: Glyph.fromCharCode(CharCode.mUpper, Color.Red),
     ai: "wander",
-    enemyCollision: true,
+    collision: true,
     stats: {
       hp: 2,
       level: 1,

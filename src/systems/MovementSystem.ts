@@ -29,7 +29,7 @@ export class MovementSystem {
         };
 
 
-        if (state.posCache.get(`${directionCheck.x}:${directionCheck.y}`)) {
+        if (state.posCache.get(`${directionCheck.x}:${directionCheck.y}`)?.length) {
           const enemy: Entity[] | undefined = state.posCache.get(`${directionCheck.x}:${directionCheck.y}`)
 
           if (enemy !== undefined) {
@@ -38,6 +38,7 @@ export class MovementSystem {
             if (player) {
               if (e.name === 'Mal') {
                 if (curEnemy.enemy) {
+                  //this makes a call to calc damage.
                   combatSystem.combatSteps(player, curEnemy);
                   collisionCheck = true;
                 }

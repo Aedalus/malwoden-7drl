@@ -18,7 +18,7 @@ export interface Entity {
   label?: string;
   ai?: "wander";
   enemy?: boolean;
-  enemyCollision?: boolean
+  collision?: boolean
 
   position: Vector2;
   glyph: Glyph;
@@ -28,7 +28,7 @@ export interface Entity {
   stairs?: boolean;
   restart?: boolean;
   stats?: Stats;
-  trapDamage?: number;
+  incomingDamage?: { sounce: string, damage: number }[],
   droppedItem?: Item;
   inventory?: Map<number, Item>;
   wantsToMove?: Direction;

@@ -53,7 +53,6 @@ export function loop() {
   // Logic Systems
   movementSystem.loop(state.level);
   stairSystem.loop(state.level);
-  // combatSystem.loop(state.level);
 
   if (currentGameState === GameState.ENEMY_TURN) {
     aiSystem.loop(state.level);

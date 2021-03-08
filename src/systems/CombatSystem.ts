@@ -2,6 +2,7 @@ import { Entity } from "../entities";
 import { Level, getEndLevel } from "../level";
 import { Log } from "../logs";
 import { state } from "../globals";
+import { Glyph, Color } from "malwoden";
 
 export class CombatSystem {
 
@@ -12,8 +13,10 @@ export class CombatSystem {
             state.level = endLevel;
         }
         futureCorpse.enemy = false;
-        futureCorpse.enemyCollision = false;
+        futureCorpse.collision = false;
         futureCorpse.ai = undefined;
+        futureCorpse.name += ' (corpse)';
+        futureCorpse.glyph = new Glyph('x', Color.White);
 
         return futureCorpse;
     }
