@@ -8,9 +8,30 @@ interface EntityOptions {
 export function getMantis(options: EntityOptions): Entity {
   return {
     name: "Mantis",
+    enemy: true,
     position: options.position,
     renderPriority: 2,
     glyph: Glyph.fromCharCode(CharCode.mUpper, Color.Red),
+    ai: "wander",
+    enemyCollision: true,
+    stats: {
+      hp: 2,
+      level: 1,
+      attack: 2,
+      armor: 1,
+      speed: 2,
+      exp: 0,
+    },
+  };
+}
+
+export function getCorpse(options: EntityOptions): Entity {
+  return {
+    name: "Corpse",
+    enemy: false,
+    position: options.position,
+    renderPriority: 3,
+    glyph: Glyph.fromCharCode(CharCode.space, Color.Red),
     ai: "wander",
     stats: {
       hp: 3,
@@ -40,6 +61,17 @@ export function getPlayer(options: EntityOptions): Entity {
       exp: 0,
     },
   };
+}
+
+export function getRestartStairs(options: EntityOptions): Entity {
+  return {
+    name: "Loop",
+    position: options.position,
+    renderPriority: 3,
+    glyph: Glyph.fromCharCode(CharCode.upwardsArrow, Color.Red),
+    stairs: true,
+    restart: true
+  }
 }
 
 export function getStairs(options: EntityOptions): Entity {
