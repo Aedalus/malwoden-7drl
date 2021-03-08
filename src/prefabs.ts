@@ -51,6 +51,7 @@ export function getPlayer(options: EntityOptions): Entity {
     position: options.position,
     renderPriority: 1,
     glyph: Glyph.fromCharCode(CharCode.at, Color.Yellow),
+    vision: 7,
     stats: {
       hp: 10,
       level: 1,

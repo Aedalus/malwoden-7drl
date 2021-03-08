@@ -64,6 +64,11 @@ export class MovementSystem {
         e.position.x += direction.x;
         e.position.y += direction.y;
         e.wantsToMove = undefined;
+
+        // Recalculate view if necessary
+        if (e.vision && e.viewShed) {
+          e.viewShed.dirty = true;
+        }
       }
     }
   }

@@ -27,12 +27,12 @@ enum Terrain {
   I = 96,
 }
 
-enum Monster {
-  mantis = 101,
-}
-
 export const TerrainGlyphs: { [e in Terrain]: Glyph | undefined } = {
-  [Terrain.none]: undefined,
+  [Terrain.none]: Glyph.fromCharCode(
+    CharCode.blackSquare,
+    Color.Black,
+    Color.Black
+  ),
   [Terrain.tree]: Glyph.fromCharCode(CharCode.blackSpadeSuit, Color.Green),
   [Terrain.mountain]: Glyph.fromCharCode(
     CharCode.blackUpPointingTriangle,
@@ -48,18 +48,65 @@ export const TerrainGlyphs: { [e in Terrain]: Glyph | undefined } = {
   [Terrain.E]: Glyph.fromCharCode(CharCode.eUpper, Color.Green),
   [Terrain.D]: Glyph.fromCharCode(CharCode.dUpper, Color.Green),
   [Terrain.I]: Glyph.fromCharCode(CharCode.iUpper, Color.Green),
+};
 
+export const FOWTerrainGlyphs: { [e in Terrain]: Glyph | undefined } = {
+  [Terrain.none]: Glyph.fromCharCode(
+    CharCode.blackSquare,
+    Color.Black.blendPercent(Color.DimGray, 50),
+    Color.Black.blendPercent(Color.DimGray, 50)
+  ),
+  [Terrain.tree]: Glyph.fromCharCode(
+    CharCode.blackSpadeSuit,
+    Color.Black.blendPercent(Color.DimGray, 20),
+    Color.Black.blendPercent(Color.DimGray, 50)
+  ),
+  [Terrain.mountain]: Glyph.fromCharCode(
+    CharCode.blackUpPointingTriangle,
+    Color.DarkGray
+  ),
+
+  //endgame lettering
+  [Terrain.Y]: undefined,
+  [Terrain.U]: undefined,
+  [Terrain.H]: undefined,
+  [Terrain.A]: undefined,
+  [Terrain.V]: undefined,
+  [Terrain.E]: undefined,
+  [Terrain.D]: undefined,
+  [Terrain.I]: undefined,
+};
+
+// Used by View System to calculate FOV
+export const TerrainBlocksVision: { [e in Terrain]: boolean } = {
+  [Terrain.none]: false,
+  [Terrain.tree]: true,
+  [Terrain.mountain]: true,
+
+  //endgame lettering
+  [Terrain.Y]: false,
+  [Terrain.U]: false,
+  [Terrain.H]: false,
+  [Terrain.A]: false,
+  [Terrain.V]: false,
+  [Terrain.E]: false,
+  [Terrain.D]: false,
+  [Terrain.I]: false,
 };
 
 export class Level {
   startPos: Vector2;
   entites: Entity[];
   map: Util.Table<Terrain>;
+  fow: boolean;
+  fowVisited: Util.Table<boolean>;
 
   constructor(map: Util.Table<Terrain>, entities: Entity[], startPos: Vector2) {
     this.map = map;
     this.entites = entities;
     this.startPos = startPos;
+    this.fow = true;
+    this.fowVisited = new Util.Table(this.map.width, this.map.height);
   }
 
   addEntity(e: Entity) {
@@ -68,7 +115,7 @@ export class Level {
 }
 
 export function getEndLevel() {
-  const width = 40
+  const width = 40;
   const height = 40;
   const table = new Util.Table<Terrain>(width, height);
 
@@ -89,10 +136,8 @@ export function getEndLevel() {
   table.set({ x: 34, y: 18 }, 94);
   table.set({ x: 36, y: 18 }, 95);
 
-
   return new Level(table, entities, { x: 20, y: 20 });
 }
-
 
 export function getNewLevel(
   width: number,

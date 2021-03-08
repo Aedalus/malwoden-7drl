@@ -32,6 +32,12 @@ export interface Entity {
   droppedItem?: Item;
   inventory?: Map<number, Item>;
   wantsToMove?: Direction;
+
+  vision?: number;
+  viewShed?: {
+    dirty: boolean;
+    area: Map<string, Vector2>;
+  };
 }
 
 // Items
