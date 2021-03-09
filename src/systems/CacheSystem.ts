@@ -12,6 +12,11 @@ export class CacheSystem {
       } else {
         state.posCache.set(key, [e]);
       }
+
+      // Update the player cache
+      if (e.player) {
+        state.playerCache = e;
+      }
     }
   }
 }
