@@ -18,7 +18,7 @@ export interface Entity {
   name: string;
   description?: string;
   label?: string;
-  ai?: "wander";
+  ai?: "wander" | "chase";
   enemy?: boolean;
   collision?: boolean;
 

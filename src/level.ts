@@ -27,6 +27,22 @@ enum Terrain {
   I = 96,
 }
 
+export const TerrainCollision: { [e in Terrain]: boolean } = {
+  [Terrain.none]: false,
+  [Terrain.tree]: true,
+  [Terrain.mountain]: true,
+
+  //endgame lettering
+  [Terrain.Y]: false,
+  [Terrain.U]: false,
+  [Terrain.H]: false,
+  [Terrain.A]: false,
+  [Terrain.V]: false,
+  [Terrain.E]: false,
+  [Terrain.D]: false,
+  [Terrain.I]: false,
+};
+
 export const TerrainGlyphs: { [e in Terrain]: Glyph | undefined } = {
   [Terrain.none]: Glyph.fromCharCode(
     CharCode.blackSquare,

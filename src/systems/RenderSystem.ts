@@ -58,7 +58,8 @@ export class RenderSystem {
     });
 
     for (let i = 0; i < Log.length(); i++) {
-      terminal.writeAt({ x: 17, y: 41 + i }, Log.entries[i]);
+      const logColor = i === Log.length() - 1 ? Color.White : Color.Gray;
+      terminal.writeAt({ x: 17, y: 41 + i }, Log.entries[i], logColor);
     }
 
     // -------------------------------------------------------------------------
