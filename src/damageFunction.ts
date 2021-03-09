@@ -26,7 +26,7 @@ function calcDefence(target: Entity): number {
 
 export function dealDamage(source: Entity, target: Entity) {
     let defence; //setup for more complicated defence formula.
-    let attack; //setup for comre complicated attack formula.
+    let attack; //setup for more complicated attack formula.
 
     defence = calcDefence(target);
     attack = calcAttack(source);

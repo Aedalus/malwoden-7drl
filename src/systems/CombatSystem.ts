@@ -5,8 +5,6 @@ import { state } from "../globals";
 import { Glyph, Color } from "malwoden";
 
 export class CombatSystem {
-    ///
-
     private makeCorpse(futureCorpse: Entity) {
         if (futureCorpse.name === 'Mal') {
             Log.addEntry('You have died.');
