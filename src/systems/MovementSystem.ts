@@ -26,29 +26,6 @@ export class MovementSystem {
           y: e.position.y + direction.y,
         };
 
-<<<<<<< HEAD
-
-        if (state.posCache.get(`${directionCheck.x}:${directionCheck.y}`)?.length) {
-          const enemy: Entity[] | undefined = state.posCache.get(`${directionCheck.x}:${directionCheck.y}`)
-
-          if (enemy !== undefined) {
-            const curEnemy = enemy[0];
-
-            if (player && player.stats) { // typescript needs to confirm that there is both a player and stats otherwise it can be undefined.
-              if (e.name === 'Mal') {
-                if (curEnemy.enemy) {
-                  //this makes a call to notify damage.
-                  dealDamage(player, curEnemy)
-                  collisionCheck = true;
-                }
-              }
-              if (curEnemy.name === 'Mal' && curEnemy.stats) { // confirms that the enemy is attacking the player and has stats to do so with.
-                collisionCheck = true;
-                dealDamage(curEnemy, player)
-              }
-            }
-          }
-=======
         // Check entities
         const stepEntities =
           state.posCache.get(`${stepPos.x}:${stepPos.y}`) || [];
@@ -57,7 +34,6 @@ export class MovementSystem {
           // Check combat
           this.checkCombat(e, stepEntities);
           continue;
->>>>>>> c456897427879eff9c2a1429a200bb4be37d7a48
         }
 
         // Check terrain
