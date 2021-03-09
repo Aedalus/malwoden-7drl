@@ -2,6 +2,7 @@ import { Terminal, GUI, Input, Color, CharCode, Vector2 } from "malwoden";
 import { FOWTerrainGlyphs, Level, TerrainGlyphs } from "../level";
 import { Log } from "../logs";
 import { state } from "../globals";
+import { Entity } from "../entities";
 
 interface RenderSystemContext {
   level: Level;
@@ -16,55 +17,64 @@ export class RenderSystem {
     // Rendering
     terminal.clear();
     const player = state.level.entites.find((x) => x.player);
+    const playerViewshed = player?.viewShed?.area || new Map<string, Vector2>();
 
     // Player Box
     GUI.box(terminal, {
       title: "Player",
       origin: { x: 0, y: 0 },
       width: 15,
-      height: 39,
+      height: 20,
     });
     if (player) {
       if (player.stats) {
-        terminal.writeAt({ x: 2, y: 6 }, `level: ${player.stats.level}`);
+        terminal.writeAt(
+          { x: 2, y: 2 },
+          `HP: ${player.stats.hp}/${player.stats.maxHp}`
+        );
+        drawBar(
+          terminal,
+          { x: 2, y: 3 },
+          10,
+          player.stats.hp / player.stats.maxHp,
+          Color.Red
+        );
 
-        terminal.writeAt({ x: 2, y: 8 }, `hp: ${player.stats.hp}`);
-
-        terminal.writeAt({ x: 2, y: 10 }, `attack: ${player.stats.attack}`);
-
-        terminal.writeAt({ x: 2, y: 12 }, `armor: ${player.stats.armor}`);
-
-        terminal.writeAt({ x: 2, y: 14 }, `speed: ${player.stats.speed}`);
+        terminal.writeAt({ x: 2, y: 7 }, `Level: ${player.stats.level}`);
+        terminal.writeAt({ x: 2, y: 8 }, `Attack: ${player.stats.attack}`);
+        terminal.writeAt({ x: 2, y: 9 }, `Armor: ${player.stats.armor}`);
+        terminal.writeAt({ x: 2, y: 10 }, `Speed: ${player.stats.speed}`);
       }
     }
 
-    terminal.writeAt({ x: 2, y: 2 }, `Stage: ${state.levelCount}`);
-    // HP
-    //   terminal.writeAt({ x: 2, y: 2 }, `HP : ${player.hp}/10`, Color.Red);
-    //   terminal.writeAt({ x: 2, y: 4 }, `Gold : ${player.coins}`, Color.Yellow);
-
-    // World Box
-    GUI.box(terminal, {
-      origin: { x: 16, y: 0 },
-      width: 53,
-      height: 39,
-    });
-
+    // -------------------------------------------------------------------------
     // Logs
+    // -------------------------------------------------------------------------
     GUI.box(terminal, {
       title: "Log",
-      origin: { x: 0, y: 40 },
-      width: 69,
+      origin: { x: 16, y: 40 },
+      width: 53,
       height: 9,
     });
 
     for (let i = 0; i < Log.length(); i++) {
-      terminal.writeAt({ x: 1, y: 42 + i }, Log.entries[i]);
+      const logColor = i === Log.length() - 1 ? Color.White : Color.Gray;
+      terminal.writeAt({ x: 17, y: 41 + i }, Log.entries[i], logColor);
     }
 
     // -------------------------------------------------------------------------
     // Draw World
     // -------------------------------------------------------------------------
+    GUI.box(terminal, {
+      origin: { x: 16, y: 0 },
+      width: 53,
+      height: 39,
+    });
+    terminal.writeAt(
+      { x: 17, y: 0 },
+      ` Stage ${state.levelCount} | ${state.level.name} `
+    );
+
     for (let x = 0; x < state.level.map.width; x++) {
       for (let y = 0; y < state.level.map.height; y++) {
         const v = { x, y };
@@ -93,10 +103,13 @@ export class RenderSystem {
       }
     }
 
-    // Only draw entities in the player's viewshed
-    player?.viewShed?.area.forEach((pos) => {
+    // Calculate for player's viewshed
+
+    const entitiesInSight: Entity[] = [];
+    playerViewshed.forEach((pos) => {
       const terrain = state.level.map.get(pos);
-      const entities = state.posCache.get(`${pos.x}:${pos.y}`);
+      const entities = state.posCache.get(`${pos.x}:${pos.y}`) || [];
+      entitiesInSight.push(...entities);
 
       // Draw Revealed Terrain
       if (terrain !== undefined) {
@@ -116,7 +129,37 @@ export class RenderSystem {
       }
     });
 
-    // Render Labels
+    // -------------------------------------------------------------------------
+    // Info Box
+    // -------------------------------------------------------------------------
+    GUI.box(terminal, {
+      title: "Info",
+      origin: { x: 0, y: 21 },
+      width: 15,
+      height: 28,
+    });
+
+    // Info HP
+    const infoEntities = entitiesInSight
+      .filter((x) => x.enemy && x.stats) // Only get enemies with stats
+      .sort((a, b) => a.id.localeCompare(b.id)); // Sort to make sure we always render the same order
+
+    for (let i = 0; i < Math.min(infoEntities.length, 5); i++) {
+      const e = infoEntities[i];
+      const y = 23 + i * 3;
+      terminal.writeAt({ x: 2, y: y }, e.name);
+      drawBar(
+        terminal,
+        { x: 2, y: y + 1 },
+        10,
+        e.stats!.hp / e.stats!.maxHp,
+        e.glyph.fore
+      );
+    }
+
+    // -------------------------------------------------------------------------
+    // Labels
+    // -------------------------------------------------------------------------
     const mousePos = this.mouse.getPos();
     const termPos = terminal.pixelToChar(mousePos);
 
@@ -140,6 +183,27 @@ export class RenderSystem {
     }
 
     terminal.render();
+  }
+}
+
+function drawBar(
+  terminal: Terminal.BaseTerminal,
+  pos: Vector2,
+  width: number,
+  percent: number,
+  color: Color
+) {
+  const filledWidth = Math.ceil(width * percent);
+
+  for (let x = 0; x < width; x++) {
+    const isFilled = x <= filledWidth;
+    const c = isFilled ? color : color.blend(Color.Black);
+    terminal.drawCharCode(
+      { x: pos.x + x, y: pos.y },
+      CharCode.blackSquare,
+      c,
+      c
+    );
   }
 }
 

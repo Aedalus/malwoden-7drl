@@ -8,6 +8,7 @@ enum PlayerInput {
   DOWN,
   LEFT,
   RIGHT,
+  SPACE,
 }
 
 export class InputSystem {
@@ -31,6 +32,10 @@ export class InputSystem {
       .onDown(
         Input.KeyCode.UpArrow,
         () => (this.currentPlayerInput = PlayerInput.UP)
+      )
+      .onDown(
+        Input.KeyCode.Space,
+        () => (this.currentPlayerInput = PlayerInput.SPACE)
       );
 
     keyboard.setContext(movement);
@@ -43,7 +48,11 @@ export class InputSystem {
 
     let wasInput = false;
 
-    if (this.currentPlayerInput === PlayerInput.UP) {
+    if (this.currentPlayerInput === PlayerInput.SPACE) {
+      // Space to wait
+      wasInput = true;
+    } else if (this.currentPlayerInput === PlayerInput.UP) {
+      // Direction Keys
       player.wantsToMove = Direction.UP;
       wasInput = true;
     } else if (this.currentPlayerInput === PlayerInput.DOWN) {

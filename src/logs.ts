@@ -1,5 +1,5 @@
 class LogManifest {
-  maxLogs = 5;
+  maxLogs = 7;
   entries: string[] = [];
   lastEntry: string = "";
   lastEntryCount: number = 1;

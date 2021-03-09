@@ -5,6 +5,7 @@ import { Direction } from "./globals";
 
 interface Stats {
   hp: number;
+  maxHp: number;
   level: number;
   attack: number;
   speed: number;
@@ -13,12 +14,13 @@ interface Stats {
 }
 
 export interface Entity {
+  id: string;
   name: string;
   description?: string;
   label?: string;
-  ai?: "wander";
+  ai?: "wander" | "chase";
   enemy?: boolean;
-  collision?: boolean
+  collision?: boolean;
 
   position: Vector2;
   glyph: Glyph;
@@ -28,7 +30,7 @@ export interface Entity {
   stairs?: boolean;
   restart?: boolean;
   stats?: Stats;
-  incomingDamage?: { source: string, damage: number }[],
+  incomingDamage?: { source: string; damage: number }[];
   droppedItem?: Item;
   inventory?: Map<number, Item>;
   wantsToMove?: Direction;

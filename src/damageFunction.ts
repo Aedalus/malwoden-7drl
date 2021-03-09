@@ -1,9 +1,10 @@
 import { Entity } from "./entities";
 
-
 function notifyDamage(source: string, power: number, target: Entity) {
-    let TARGET = target;
-    TARGET.incomingDamage?.push({ source, damage: power });
+    if (!target.incomingDamage) {
+        target.incomingDamage = [];
+    }
+    target.incomingDamage?.push({ source, damage: power });
 }
 
 function calcAttack(source: Entity): number {
@@ -17,8 +18,9 @@ function calcAttack(source: Entity): number {
 
 function calcDefence(target: Entity): number {
     let totalDefence = 0;
-    if (target.stats) { //verifies that target has stats and is a valid target.
-        totalDefence = totalDefence + target.stats?.armor
+    if (target.stats) {
+        //verifies that target has stats and is a valid target.
+        totalDefence = totalDefence + target.stats?.armor;
     }
 
     return totalDefence;
@@ -26,17 +28,11 @@ function calcDefence(target: Entity): number {
 
 export function dealDamage(source: Entity, target: Entity) {
     let defence; //setup for more complicated defence formula.
-    let attack; //setup for more complicated attack formula.
+    let attack; //setup for comre complicated attack formula.
 
     defence = calcDefence(target);
     attack = calcAttack(source);
     let power: number = 0;
     power = attack - defence;
-    if (power > 0) {
-        notifyDamage(source.name, power, target);
-    }
+    notifyDamage(source.name, power, target);
 }
-
-
-
-
