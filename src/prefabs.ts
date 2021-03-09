@@ -7,16 +7,18 @@ interface EntityOptions {
 
 export function getMantis(options: EntityOptions): Entity {
   return {
+    id: Math.random().toString(),
     name: "Mantis",
     enemy: true,
     position: options.position,
     incomingDamage: [],
     renderPriority: 2,
-    glyph: Glyph.fromCharCode(CharCode.mUpper, Color.Red),
+    glyph: Glyph.fromCharCode(CharCode.mUpper, Color.Orange),
     ai: "wander",
     collision: true,
     stats: {
-      hp: 2,
+      hp: 3,
+      maxHp: 3,
       level: 1,
       attack: 2,
       armor: 1,
@@ -26,17 +28,20 @@ export function getMantis(options: EntityOptions): Entity {
   };
 }
 
-export function getCorpse(options: EntityOptions): Entity {
+export function getLadybug(options: EntityOptions): Entity {
   return {
-    name: "Corpse",
-    enemy: false,
+    id: Math.random().toString(),
+    name: "Ladybug",
+    enemy: true,
     position: options.position,
     incomingDamage: [],
-    renderPriority: 3,
-    glyph: Glyph.fromCharCode(CharCode.space, Color.Red),
+    renderPriority: 2,
+    glyph: Glyph.fromCharCode(CharCode.lUpper, Color.Red),
     ai: "wander",
+    collision: true,
     stats: {
-      hp: 3,
+      hp: 1,
+      maxHp: 1,
       level: 1,
       attack: 2,
       armor: 1,
@@ -48,6 +53,7 @@ export function getCorpse(options: EntityOptions): Entity {
 
 export function getPlayer(options: EntityOptions): Entity {
   return {
+    id: Math.random().toString(),
     name: "Mal",
     player: true,
     position: options.position,
@@ -57,6 +63,7 @@ export function getPlayer(options: EntityOptions): Entity {
     vision: 7,
     stats: {
       hp: 10,
+      maxHp: 10,
       level: 1,
       attack: 3,
       armor: 1,
@@ -68,17 +75,19 @@ export function getPlayer(options: EntityOptions): Entity {
 
 export function getRestartStairs(options: EntityOptions): Entity {
   return {
+    id: Math.random().toString(),
     name: "Loop",
     position: options.position,
     renderPriority: 3,
     glyph: Glyph.fromCharCode(CharCode.upwardsArrow, Color.Red),
     stairs: true,
-    restart: true
-  }
+    restart: true,
+  };
 }
 
 export function getStairs(options: EntityOptions): Entity {
   return {
+    id: Math.random().toString(),
     name: "Stairs",
     position: options.position,
     renderPriority: 3,

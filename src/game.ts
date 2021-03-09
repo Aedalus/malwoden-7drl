@@ -68,7 +68,6 @@ export function loop() {
   if (currentGameState === GameState.GAME_START) {
     currentGameState = GameState.AWAITING_INPUT;
   } else if (currentGameState === GameState.PLAYER_TURN) {
-    Log.addEntry("Player Turn!");
     currentGameState = GameState.ENEMY_TURN;
   } else if (currentGameState === GameState.ENEMY_TURN) {
     currentGameState = GameState.AWAITING_INPUT;
