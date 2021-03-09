@@ -95,13 +95,20 @@ export const TerrainBlocksVision: { [e in Terrain]: boolean } = {
 };
 
 export class Level {
+  name: string;
   startPos: Vector2;
   entites: Entity[];
   map: Util.Table<Terrain>;
   fow: boolean;
   fowVisited: Util.Table<boolean>;
 
-  constructor(map: Util.Table<Terrain>, entities: Entity[], startPos: Vector2) {
+  constructor(
+    name: string,
+    map: Util.Table<Terrain>,
+    entities: Entity[],
+    startPos: Vector2
+  ) {
+    this.name = name;
     this.map = map;
     this.entites = entities;
     this.startPos = startPos;
@@ -136,7 +143,7 @@ export function getEndLevel() {
   table.set({ x: 34, y: 18 }, 94);
   table.set({ x: 36, y: 18 }, 95);
 
-  return new Level(table, entities, { x: 20, y: 20 });
+  return new Level("The End", table, entities, { x: 20, y: 20 });
 }
 
 export function getNewLevel(
@@ -169,7 +176,10 @@ export function getNewLevel(
   // Generate Entities
   const enemy_count = 10;
   for (let i = 0; i < enemy_count; i++) {
-    entities.push(Prefab.getMantis({ position: randomOpen[i] }));
+    let e = rng.nextBoolean()
+      ? Prefab.getMantis({ position: randomOpen[i] })
+      : Prefab.getLadybug({ position: randomOpen[i] });
+    entities.push(e);
   }
 
   // Generate Player if applicable, start pos either way
@@ -182,5 +192,5 @@ export function getNewLevel(
   entities.push(Prefab.getStairs({ position: randomOpen[11] }));
 
   // Create level
-  return new Level(map.table, entities, startPos);
+  return new Level("Whisperwoods", map.table, entities, startPos);
 }
