@@ -1,5 +1,6 @@
 import { Entity } from "./entities";
-import { getNewLevel, Level } from "./level";
+import { Stage, selectStage } from "./stage";
+import { Rand } from 'malwoden'
 
 export enum GameState {
   GAME_START,
@@ -14,22 +15,21 @@ export enum Direction {
   LEFT = "left",
   RIGHT = "right",
 }
-
-export const map_width = 52;
-export const map_height = 38;
+const startingStage = 1;
+export const gameSeed = new Rand.AleaRNG();
 
 interface GlobalState {
-  levelCount: number;
-  level: Level;
+  stageCount: number;
+  stage: Stage;
   posCache: Map<string, Entity[]>;
   playerCache: Entity | undefined;
 }
 
 export const state: GlobalState = {
   // The current level 'depth'
-  levelCount: 1,
+  stageCount: 1,
   // Stores the current level
-  level: getNewLevel(map_width, map_height, true),
+  stage: selectStage(startingStage),
   // Allows quick lookup of entities.
   // Should not be changed outside the cache system
   posCache: new Map<string, Entity[]>(),

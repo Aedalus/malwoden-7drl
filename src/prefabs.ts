@@ -5,6 +5,28 @@ interface EntityOptions {
   position: Vector2;
 }
 
+export function getBird(options: EntityOptions): Entity {
+  return {
+    id: Math.random().toString(),
+    name: "Bird",
+    enemy: true,
+    position: options.position,
+    renderPriority: 2,
+    glyph: Glyph.fromCharCode(CharCode.rightwardsArrow, Color.Orange),
+    ai: "chase",
+    collision: true,
+    vision: 6,
+    stats: {
+      hp: 10,
+      maxHp: 10,
+      level: 1,
+      attack: 4,
+      armor: 0,
+      exp: 0,
+    },
+  };
+}
+
 export function getMantis(options: EntityOptions): Entity {
   return {
     id: Math.random().toString(),
@@ -13,6 +35,7 @@ export function getMantis(options: EntityOptions): Entity {
     position: options.position,
     renderPriority: 2,
     glyph: Glyph.fromCharCode(CharCode.mUpper, Color.Orange),
+    // glyph: Glyph.fromCharCode(CharCode.squareRoot, Color.AliceBlue),
     ai: "chase",
     collision: true,
     vision: 6,
@@ -22,7 +45,98 @@ export function getMantis(options: EntityOptions): Entity {
       level: 1,
       attack: 2,
       armor: 1,
-      speed: 2,
+      exp: 30,
+    },
+  };
+}
+
+export function getWeasle(options: EntityOptions): Entity {
+  return {
+    id: Math.random().toString(),
+    name: "Wealse",
+    enemy: true,
+    position: options.position,
+    renderPriority: 2,
+    //glyph: Glyph.fromCharCode(CharCode.mUpper, Color.Orange),
+    glyph: Glyph.fromCharCode(CharCode.squareRoot, Color.AliceBlue),
+    ai: "chase",
+    collision: true,
+    vision: 6,
+    stats: {
+      hp: 17,
+      maxHp: 17,
+      level: 1,
+      attack: 8,
+      armor: 3,
+      exp: 0,
+    },
+  };
+}
+
+export function getScorpion(options: EntityOptions): Entity {
+  return {
+    id: Math.random().toString(),
+    //a boss
+    name: "Scorpion",
+    enemy: true,
+    position: options.position,
+    renderPriority: 2,
+    //glyph: Glyph.fromCharCode(CharCode.mUpper, Color.Orange),
+    glyph: Glyph.fromCharCode(CharCode.poundSign, Color.AliceBlue),
+    ai: "chase",
+    collision: true,
+    vision: 6,
+    stats: {
+      hp: 20,
+      maxHp: 0,
+      level: 1,
+      attack: 8,
+      armor: 4,
+      exp: 0,
+    },
+  };
+}
+
+export function getAnts(options: EntityOptions): Entity {
+  return {
+    id: Math.random().toString(),
+    name: "Ants",
+    enemy: true,
+    position: options.position,
+    renderPriority: 2,
+    //glyph: Glyph.fromCharCode(CharCode.mUpper, Color.Orange),
+    glyph: Glyph.fromCharCode(CharCode.greekSmallLetterEpsilon, Color.AliceBlue),
+    ai: "chase",
+    collision: true,
+    vision: 6,
+    stats: {
+      hp: 6,
+      maxHp: 6,
+      level: 1,
+      attack: 3,
+      armor: 0,
+      exp: 0,
+    },
+  };
+}
+
+export function getSnake(options: EntityOptions): Entity {
+  return {
+    id: Math.random().toString(),
+    name: "Snake",
+    enemy: true,
+    position: options.position,
+    renderPriority: 2,
+    glyph: Glyph.fromCharCode(CharCode.sUpper, Color.Green),
+    ai: "chase",
+    collision: true,
+    vision: 6,
+    stats: {
+      hp: 5,
+      maxHp: 5,
+      level: 1,
+      attack: 7,
+      armor: 0,
       exp: 0,
     },
   };
@@ -44,8 +158,7 @@ export function getLadybug(options: EntityOptions): Entity {
       level: 1,
       attack: 2,
       armor: 1,
-      speed: 2,
-      exp: 0,
+      exp: 10,
     },
   };
 }
@@ -67,7 +180,6 @@ export function getPlayer(options: EntityOptions): Entity {
       level: 1,
       attack: 3,
       armor: 1,
-      speed: 1,
       exp: 0,
     },
   };
@@ -95,3 +207,6 @@ export function getStairs(options: EntityOptions): Entity {
     stairs: true,
   };
 }
+
+
+//traps

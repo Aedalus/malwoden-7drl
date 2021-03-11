@@ -8,7 +8,6 @@ interface Stats {
   maxHp: number;
   level: number;
   attack: number;
-  speed: number;
   armor: number;
   exp: number;
 }

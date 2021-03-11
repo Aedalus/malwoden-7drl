@@ -1,6 +1,6 @@
 import { Vector2 } from "malwoden";
 import { Direction, state } from "../globals";
-import { Level, TerrainCollision } from "../level";
+import { Stage, TerrainCollision } from "../stage";
 import { Entity } from "../entities";
 import { dealDamage } from "../damageFunction";
 
@@ -12,9 +12,9 @@ const directionVectors = {
 };
 
 export class MovementSystem {
-  loop(level: Level) {
+  loop(stage: Stage) {
     //sets up monsters that can be collided with.
-    for (let e of level.entites) {
+    for (let e of stage.entites) {
       if (e.wantsToMove) {
         // Get direction, the reset wants to move
         const direction = directionVectors[e.wantsToMove];
@@ -37,7 +37,7 @@ export class MovementSystem {
         }
 
         // Check terrain
-        const terrain = level.map.get(stepPos);
+        const terrain = stage.map.get(stepPos);
         const terrainBlocking = terrain ? TerrainCollision[terrain] : false;
         if (terrainBlocking) {
           continue;

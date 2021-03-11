@@ -1,5 +1,5 @@
 import { Entity } from "../entities";
-import { Level, getEndLevel } from "../level";
+import { Stage, getEndLevel } from "../stage";
 import { Log } from "../logs";
 import { state } from "../globals";
 import { Glyph, Color } from "malwoden";
@@ -11,11 +11,16 @@ export class CombatSystem {
         if (futureCorpse.name === "Mal") {
             Log.addEntry("You have died.");
             const endLevel = getEndLevel();
-            state.level = endLevel;
+            state.stage = endLevel;
         }
         Log.addEntry(futureCorpse.name + " has died horribly.");
+        if (state.playerCache && state.playerCache.stats && futureCorpse.stats) {
+            state.playerCache.stats.exp = state.playerCache.stats?.exp + futureCorpse.stats?.exp
+        }
+
         futureCorpse.enemy = false;
         futureCorpse.collision = false;
+        futureCorpse.stats = undefined;
         futureCorpse.ai = undefined;
         futureCorpse.name += " (corpse)";
         futureCorpse.glyph = new Glyph("x", Color.White);
@@ -44,8 +49,8 @@ export class CombatSystem {
         }
     }
 
-    loop(level: Level) {
-        for (let e of level.entites) {
+    loop(stage: Stage) {
+        for (let e of stage.entites) {
             while (e.incomingDamage && e.incomingDamage.length > 0) {
                 //check to see if the current entity has damage being logged against them.
                 let incDamage = e.incomingDamage.pop()!;

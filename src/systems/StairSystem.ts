@@ -1,11 +1,11 @@
-import { map_height, map_width, state } from "../globals";
-import { getNewLevel, Level } from "../level";
+import { state } from "../globals";
+import { Stage, selectStage } from "../stage";
 import { Log } from "../logs";
 
 export class StairSystem {
-  loop(level: Level) {
-    const player = level.entites.find((x) => x.player);
-    const stairs = level.entites.filter((x) => x.stairs);
+  loop(stage: Stage) {
+    const player = stage.entites.find((x) => x.player);
+    const stairs = stage.entites.filter((x) => x.stairs);
 
     for (let s of stairs) {
       if (
@@ -14,19 +14,18 @@ export class StairSystem {
       ) {
         if (s.restart) {
           Log.addEntry("You are reborn. Let the snailing continue!");
-          const newLevel = getNewLevel(map_width, map_height, false);
-          newLevel.addEntity(player);
-          state.level = newLevel;
-          state.levelCount = 1;
+          state.stageCount = 1;
+          const newLevel = selectStage(state.stageCount);
+          state.stage = newLevel;
           player.position.x = newLevel.startPos.x;
           player.position.y = newLevel.startPos.y;
 
         } else {
           Log.addEntry("Descending the stairs");
-          const newLevel = getNewLevel(map_width, map_height, false);
+          state.stageCount++;
+          const newLevel = selectStage(state.stageCount);
           newLevel.addEntity(player);
-          state.level = newLevel;
-          state.levelCount++;
+          state.stage = newLevel;
           player.position.x = newLevel.startPos.x;
           player.position.y = newLevel.startPos.y;
         }
