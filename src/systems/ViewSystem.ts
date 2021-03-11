@@ -1,5 +1,5 @@
 import { FOV, Vector2 } from "malwoden";
-import { Level, TerrainBlocksVision } from "../level";
+import { Stage, TerrainBlocksVision } from "../stage";
 import { state } from "../globals";
 
 export class ViewSystem {
@@ -7,13 +7,13 @@ export class ViewSystem {
     topology: "eight",
     cartesianRange: true,
     lightPasses: (pos) => {
-      const terrain = state.level.map.get(pos);
+      const terrain = state.stage.map.get(pos);
       if (!terrain) return true;
       else return TerrainBlocksVision[terrain] === false;
     },
   });
 
-  loop(level: Level) {
+  loop(level: Stage) {
     // Loop through entities
     for (const e of level.entites) {
       if (!e.vision) continue;

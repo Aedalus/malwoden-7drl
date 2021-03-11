@@ -1,11 +1,11 @@
 import { Terminal, GUI, Input, Color, CharCode, Vector2 } from "malwoden";
-import { FOWTerrainGlyphs, Level, TerrainGlyphs } from "../level";
+import { FOWTerrainGlyphs, Stage, TerrainGlyphs } from "../stage";
 import { Log } from "../logs";
 import { state } from "../globals";
 import { Entity } from "../entities";
 
 interface RenderSystemContext {
-  level: Level;
+  stage: Stage;
   terminal: Terminal.RetroTerminal;
   mapTerminal: Terminal.PortTerminal;
 }
@@ -16,7 +16,7 @@ export class RenderSystem {
   loop({ terminal, mapTerminal }: RenderSystemContext) {
     // Rendering
     terminal.clear();
-    const player = state.level.entites.find((x) => x.player);
+    const player = state.stage.entites.find((x) => x.player);
     const playerViewshed = player?.viewShed?.area || new Map<string, Vector2>();
 
     // Player Box
@@ -43,7 +43,6 @@ export class RenderSystem {
         terminal.writeAt({ x: 2, y: 7 }, `Level: ${player.stats.level}`);
         terminal.writeAt({ x: 2, y: 8 }, `Attack: ${player.stats.attack}`);
         terminal.writeAt({ x: 2, y: 9 }, `Armor: ${player.stats.armor}`);
-        terminal.writeAt({ x: 2, y: 10 }, `Speed: ${player.stats.speed}`);
       }
     }
 
@@ -72,16 +71,16 @@ export class RenderSystem {
     });
     terminal.writeAt(
       { x: 17, y: 0 },
-      ` Stage ${state.levelCount} | ${state.level.name} `
+      ` Stage ${state.stageCount} | ${state.stage.name} `
     );
 
-    for (let x = 0; x < state.level.map.width; x++) {
-      for (let y = 0; y < state.level.map.height; y++) {
+    for (let x = 0; x < state.stage.map.width; x++) {
+      for (let y = 0; y < state.stage.map.height; y++) {
         const v = { x, y };
-        const terrain = state.level.map.get({ x, y });
+        const terrain = state.stage.map.get({ x, y });
 
         const isVisible =
-          state.level.fowVisited.isInBounds(v) && state.level.fowVisited.get(v);
+          state.stage.fowVisited.isInBounds(v) && state.stage.fowVisited.get(v);
 
         if (!isVisible) {
           mapTerminal.drawCharCode(
@@ -107,7 +106,7 @@ export class RenderSystem {
 
     const entitiesInSight: Entity[] = [];
     playerViewshed.forEach((pos) => {
-      const terrain = state.level.map.get(pos);
+      const terrain = state.stage.map.get(pos);
       const entities = state.posCache.get(`${pos.x}:${pos.y}`) || [];
       entitiesInSight.push(...entities);
 

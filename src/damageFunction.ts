@@ -1,38 +1,38 @@
 import { Entity } from "./entities";
 
 function notifyDamage(source: string, power: number, target: Entity) {
-  if (!target.incomingDamage) {
-    target.incomingDamage = [];
-  }
-  target.incomingDamage?.push({ source, damage: power });
+    if (!target.incomingDamage) {
+        target.incomingDamage = [];
+    }
+    target.incomingDamage?.push({ source, damage: power });
 }
 
 function calcAttack(source: Entity): number {
-  let totalAttack = 0;
-  if (source.stats) {
-    totalAttack = source.stats.attack;
-  }
+    let totalAttack = 0;
+    if (source.stats) {
+        totalAttack = source.stats.attack;
+    }
 
-  return totalAttack;
+    return totalAttack;
 }
 
 function calcDefence(target: Entity): number {
-  let totalDefence = 0;
-  if (target.stats) {
-    //verifies that target has stats and is a valid target.
-    totalDefence = totalDefence + target.stats?.armor;
-  }
+    let totalDefence = 0;
+    if (target.stats) {
+        //verifies that target has stats and is a valid target.
+        totalDefence = totalDefence + target.stats?.armor;
+    }
 
-  return totalDefence;
+    return totalDefence;
 }
 
 export function dealDamage(source: Entity, target: Entity) {
-  let defence; //setup for more complicated defence formula.
-  let attack; //setup for comre complicated attack formula.
+    let defence; //setup for more complicated defence formula.
+    let attack; //setup for comre complicated attack formula.
 
-  defence = calcDefence(target);
-  attack = calcAttack(source);
-  let power: number = 0;
-  power = attack - defence;
-  notifyDamage(source.name, power, target);
+    defence = calcDefence(target);
+    attack = calcAttack(source);
+    let power: number = 0;
+    power = attack - defence;
+    notifyDamage(source.name, power, target);
 }

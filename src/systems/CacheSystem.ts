@@ -4,7 +4,7 @@ export class CacheSystem {
   loop() {
     // Update the position cache
     state.posCache.clear();
-    for (let e of state.level.entites) {
+    for (let e of state.stage.entites) {
       const key = `${e.position.x}:${e.position.y}`;
 
       if (state.posCache.has(key)) {
