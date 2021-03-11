@@ -148,6 +148,10 @@ export class Stage {
   addEntity(e: Entity) {
     this.entites.push(e);
   }
+
+  removeEntity(e: Entity) {
+    this.entites = this.entites.filter((x) => x.id !== e.id);
+  }
 }
 
 export function getEndLevel() {
@@ -175,7 +179,26 @@ export function getEndLevel() {
   return new Stage("The End", table, entities, { x: 20, y: 20 });
 }
 
-function generateStage1(width: number, height: number, createPlayer: boolean): Stage {
+function strokeTable<T>(table: Util.Table<T>, val: T) {
+  for (let x = 0; x < table.width; x++) {
+    for (let y = 0; y < table.height; y++) {
+      if (
+        x === 0 ||
+        x === table.width - 1 ||
+        y === 0 ||
+        y === table.height - 1
+      ) {
+        table.set({ x, y }, val);
+      }
+    }
+  }
+}
+
+function generateStage1(
+  width: number,
+  height: number,
+  createPlayer: boolean
+): Stage {
   //generate seed
   // Generate Terrain
   const map_width = width;
@@ -186,7 +209,7 @@ function generateStage1(width: number, height: number, createPlayer: boolean): S
   });
   map.randomize(0.63);
   map.doSimulationStep(3);
-  map.connect();
+  strokeTable(map.table, Terrain.tree);
 
   const open: Vector2[] = [];
   for (let x = 0; x < map.table.width; x++) {
@@ -206,10 +229,6 @@ function generateStage1(width: number, height: number, createPlayer: boolean): S
       : Prefab.getLadybug({ position: randomOpen[i] });
     entities.push(e);
   }
-  // generate keys goes here.
-  // const key = ['keyture'];
-  // const enemyArray = entities.filter(x => x.enemy);
-
 
   // Generate Player if applicable, start pos either way
   const startPos = randomOpen[10];
@@ -218,11 +237,26 @@ function generateStage1(width: number, height: number, createPlayer: boolean): S
   }
   // Generate Stairs
   entities.push(Prefab.getStairs({ position: randomOpen[11] }));
+
+  // Generate berries
+  for (let i = 12; i < 20; i++) {
+    const berry = Prefab.getBerry({ position: randomOpen[i] });
+    entities.push(berry);
+  }
+
+  // Generate book
+  const book = Prefab.getBook({ position: randomOpen[20] });
+  entities.push(book);
+
   // Create level
   return new Stage("Whisperwoods", map.table, entities, startPos);
 }
 
-function generateStage2(width: number, height: number, createPlayer: boolean): Stage {
+function generateStage2(
+  width: number,
+  height: number,
+  createPlayer: boolean
+): Stage {
   //generate seed
   // Generate Terrain
   const map_width = width;
@@ -265,7 +299,11 @@ function generateStage2(width: number, height: number, createPlayer: boolean): S
   return new Stage("Clifftops", map.table, entities, startPos);
 }
 
-function generateStage3(width: number, height: number, createPlayer: boolean): Stage {
+function generateStage3(
+  width: number,
+  height: number,
+  createPlayer: boolean
+): Stage {
   //generate seed
   // Generate Terrain
   const map_width = width;
@@ -308,7 +346,11 @@ function generateStage3(width: number, height: number, createPlayer: boolean): S
   return new Stage("The Crypt", map.table, entities, startPos);
 }
 
-function generateStage4(width: number, height: number, createPlayer: boolean): Stage {
+function generateStage4(
+  width: number,
+  height: number,
+  createPlayer: boolean
+): Stage {
   //generate seed
   // Generate Terrain
   const map_width = width;
@@ -353,14 +395,18 @@ function generateStage4(width: number, height: number, createPlayer: boolean): S
 
 export function selectStage(stage: number): Stage {
   switch (stage) {
-    case 1: return generateStage1(map_width, map_height, true);
-    case 2: return generateStage2(map_width, map_height, false);
-    case 3: return generateStage3(map_height, map_height, false);
-    case 4: return generateStage4(map_height, map_height, false);
-    default: return getEndLevel();
+    case 1:
+      return generateStage1(map_width, map_height, true);
+    case 2:
+      return generateStage2(map_width, map_height, false);
+    case 3:
+      return generateStage3(map_height, map_height, false);
+    case 4:
+      return generateStage4(map_height, map_height, false);
+    default:
+      return getEndLevel();
   }
 }
-
 
 export function getNewLevel(
   width: number,

@@ -1,5 +1,7 @@
-import { Vector2, Glyph, CharCode, Color } from "malwoden";
+import { Vector2, Glyph, CharCode, Color, Rand } from "malwoden";
 import { Entity } from "./entities";
+
+const rng = new Rand.AleaRNG();
 
 interface EntityOptions {
   position: Vector2;
@@ -105,7 +107,10 @@ export function getAnts(options: EntityOptions): Entity {
     position: options.position,
     renderPriority: 2,
     //glyph: Glyph.fromCharCode(CharCode.mUpper, Color.Orange),
-    glyph: Glyph.fromCharCode(CharCode.greekSmallLetterEpsilon, Color.AliceBlue),
+    glyph: Glyph.fromCharCode(
+      CharCode.greekSmallLetterEpsilon,
+      Color.AliceBlue
+    ),
     ai: "chase",
     collision: true,
     vision: 6,
@@ -208,5 +213,33 @@ export function getStairs(options: EntityOptions): Entity {
   };
 }
 
+export function getBerry(options: EntityOptions): Entity {
+  const amount = rng.nextItem([1, 1, 1, 2]);
+  const color = amount === 1 ? Color.Purple : Color.MediumPurple;
+  return {
+    id: Math.random().toString(),
+    name: "Berry",
+    position: options.position,
+    renderPriority: 4,
+    glyph: Glyph.fromCharCode(CharCode.bullet, color),
+    consumable: {
+      hp: amount,
+    },
+  };
+}
+
+export function getBook(options: EntityOptions): Entity {
+  const amount = rng.nextItem([20, 20, 20, 30, 30, 50]);
+  return {
+    id: Math.random().toString(),
+    name: "Snail Book",
+    position: options.position,
+    renderPriority: 4,
+    glyph: Glyph.fromCharCode(CharCode.equals, Color.Brown),
+    consumable: {
+      exp: 50,
+    },
+  };
+}
 
 //traps

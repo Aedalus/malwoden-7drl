@@ -8,10 +8,11 @@ import { AISystem } from "./systems/AISystem";
 import { StairSystem } from "./systems/StairSystem";
 import { CacheSystem } from "./systems/CacheSystem";
 import { CombatSystem } from "./systems/CombatSystem";
-import { map_height, map_width } from "./stage"
+import { map_height, map_width } from "./stage";
 import { state } from "./globals";
 import { ViewSystem } from "./systems/ViewSystem";
-import { LevelSystem } from "./systems/levelSystem"
+import { LevelSystem } from "./systems/levelSystem";
+import { ConsumableSystem } from "./systems/ConsumableSystem";
 
 // Globals
 let terminal: Terminal.RetroTerminal;
@@ -27,6 +28,7 @@ const cacheSystem = new CacheSystem();
 const viewSystem = new ViewSystem();
 const combatSystem = new CombatSystem();
 const levelSystem = new LevelSystem();
+const consumableSystem = new ConsumableSystem();
 
 let currentGameState = GameState.GAME_START;
 
@@ -34,7 +36,7 @@ export function init(term: Terminal.RetroTerminal) {
   terminal = term;
   mapTerminal = terminal.port({ x: 17, y: 1 }, map_width, map_height);
 
-  Log.addEntry("Game Start!");
+  Log.addEntryHigh("Game Start!");
 
   // Render once to start
   renderSystem.loop({
@@ -56,11 +58,11 @@ export function loop() {
 
   // Logic Systems
   movementSystem.loop(state.stage);
+  consumableSystem.loop(state.stage);
   stairSystem.loop(state.stage);
   viewSystem.loop(state.stage);
   combatSystem.loop(state.stage);
   levelSystem.loop(state.stage);
-
 
   if (currentGameState === GameState.ENEMY_TURN) {
     aiSystem.loop(state.stage);

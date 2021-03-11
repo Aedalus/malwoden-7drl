@@ -13,15 +13,14 @@ export class StairSystem {
         s.position.y === player.position.y
       ) {
         if (s.restart) {
-          Log.addEntry("You are reborn. Let the snailing continue!");
+          Log.addEntryHigh("You are reborn. Let the snailing continue!");
           state.stageCount = 1;
           const newLevel = selectStage(state.stageCount);
           state.stage = newLevel;
           player.position.x = newLevel.startPos.x;
           player.position.y = newLevel.startPos.y;
-
         } else {
-          Log.addEntry("Descending the stairs");
+          Log.addEntryMid("Descending the stairs");
           state.stageCount++;
           const newLevel = selectStage(state.stageCount);
           newLevel.addEntity(player);

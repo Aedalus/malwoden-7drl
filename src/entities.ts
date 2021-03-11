@@ -34,6 +34,11 @@ export interface Entity {
   inventory?: Map<number, Item>;
   wantsToMove?: Direction;
 
+  consumable?: {
+    hp?: number;
+    exp?: number;
+  };
+
   vision?: number;
   viewShed?: {
     dirty: boolean;

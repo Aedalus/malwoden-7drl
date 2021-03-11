@@ -1,6 +1,6 @@
 import { Terminal, GUI, Input, Color, CharCode, Vector2 } from "malwoden";
 import { FOWTerrainGlyphs, Stage, TerrainGlyphs } from "../stage";
-import { Log } from "../logs";
+import { Log, LogLevel } from "../logs";
 import { state } from "../globals";
 import { Entity } from "../entities";
 
@@ -9,6 +9,13 @@ interface RenderSystemContext {
   terminal: Terminal.RetroTerminal;
   mapTerminal: Terminal.PortTerminal;
 }
+
+const logLevelColor: { [l in LogLevel]: Color } = {
+  high: Color.Cyan,
+  mid: Color.White,
+  low: Color.Gray,
+  warning: Color.Red,
+};
 
 export class RenderSystem {
   mouse = new Input.MouseHandler();
@@ -57,8 +64,9 @@ export class RenderSystem {
     });
 
     for (let i = 0; i < Log.length(); i++) {
-      const logColor = i === Log.length() - 1 ? Color.White : Color.Gray;
-      terminal.writeAt({ x: 17, y: 41 + i }, Log.entries[i], logColor);
+      const [logLevel, txt] = Log.entries[i];
+      const logColor = logLevelColor[logLevel];
+      terminal.writeAt({ x: 17, y: 41 + i }, txt, logColor);
     }
 
     // -------------------------------------------------------------------------
