@@ -48,7 +48,10 @@ export function loop() {
   // Cache System should always run first to build up cache
   cacheSystem.loop();
 
-  if (state.currentGameState === GameState.GAME_WIN) {
+  if (
+    state.currentGameState === GameState.GAME_WIN ||
+    state.currentGameState === GameState.GAME_LOSS
+  ) {
     // Input, render, return
     inputSystem.loop(state.stage);
     renderSystem.loop({

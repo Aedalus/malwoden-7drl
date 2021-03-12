@@ -4,6 +4,7 @@ import { FOWTerrainGlyphs, TerrainGlyphs } from "../terrain";
 import { Log, LogLevel } from "../logs";
 import { GameState, state } from "../globals";
 import { Entity } from "../entities";
+import { getEXPForLevel } from "./levelSystem";
 
 interface RenderSystemContext {
   stage: Stage;
@@ -47,10 +48,20 @@ export class RenderSystem {
           player.stats.hp / player.stats.maxHp,
           Color.Red
         );
+        const expNext = getEXPForLevel(player.stats.level);
+        const expLast = getEXPForLevel(player.stats.level - 1);
+        terminal.writeAt({ x: 2, y: 5 }, `EXP`);
+        drawBar(
+          terminal,
+          { x: 2, y: 6 },
+          10,
+          (player.stats.exp - expLast) / expNext,
+          Color.Gold
+        );
 
-        terminal.writeAt({ x: 2, y: 6 }, `Level:  ${player.stats.level}`);
-        terminal.writeAt({ x: 2, y: 7 }, `Attack: ${player.stats.attack}`);
-        terminal.writeAt({ x: 2, y: 8 }, `Armor:  ${player.stats.armor}`);
+        terminal.writeAt({ x: 2, y: 9 }, `Level:  ${player.stats.level}`);
+        terminal.writeAt({ x: 2, y: 10 }, `Attack: ${player.stats.attack}`);
+        terminal.writeAt({ x: 2, y: 11 }, `Armor:  ${player.stats.armor}`);
       }
     }
 
@@ -195,7 +206,9 @@ export class RenderSystem {
     if (state.currentGameState === GameState.GAME_WIN) {
       renderWon(mapTerminal);
     }
-
+    if (state.currentGameState === GameState.GAME_LOSS) {
+      renderLost(mapTerminal);
+    }
     // Render Help
     if (state.help) {
       renderHelp(terminal);
@@ -376,6 +389,29 @@ function renderWon(terminal: Terminal.PortTerminal) {
   terminal.writeAt({ x: 7, y: 22 }, "would propser under a new golden age.");
   terminal.writeAt({ x: 12, y: 26 }, "Not the fastest golden age,");
   terminal.writeAt({ x: 15, y: 28 }, "but good nonetheless.");
+
+  // Quit
+  const qX = 25;
+  const qY = 35;
+  terminal.writeAt({ x: qX, y: qY }, "Press (esc) to ");
+  terminal.writeAt({ x: qX + 15, y: qY }, "@_,", Color.Yellow);
+  terminal.writeAt({ x: qX + 19, y: qY }, "again!");
+}
+
+function renderLost(terminal: Terminal.PortTerminal) {
+  terminal.clear();
+
+  const wX = 20;
+  const wY = 15;
+
+  terminal.writeAt({ x: wX, y: wY }, "Mal", Color.Yellow);
+  terminal.writeAt({ x: wX + 4, y: wY }, "has");
+  terminal.writeAt({ x: wX + 8, y: wY }, "Died!", Color.Red);
+
+  const mX = 24;
+  const mY = 10;
+
+  terminal.writeAt({ x: mX + winAnim.dX, y: mY }, "@_,", Color.Red);
 
   // Quit
   const qX = 25;

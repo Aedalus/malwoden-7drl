@@ -1,20 +1,18 @@
-import { Entity } from '../entities';
-import { Stage } from '../stage';
-import { getEndLevel } from '../generation/generation';
-import { Log } from '../logs';
-import { state } from '../globals';
-import { Glyph, Color } from 'malwoden';
+import { Entity } from "../entities";
+import { Stage } from "../stage";
+import { Log } from "../logs";
+import { GameState, state } from "../globals";
+import { Glyph, Color } from "malwoden";
 
 export class CombatSystem {
   ///
 
   private makeCorpse(futureCorpse: Entity) {
-    if (futureCorpse.name === 'Mal') {
-      Log.addEntryWarning('You have died.');
-      const endLevel = getEndLevel();
-      state.stage = endLevel;
+    if (futureCorpse.name === "Mal") {
+      Log.addEntryWarning("You have died.");
+      state.currentGameState = GameState.GAME_LOSS;
     }
-    Log.addEntryMid(futureCorpse.name + ' has died horribly.');
+    Log.addEntryMid(futureCorpse.name + " has died horribly.");
     if (state.playerCache && state.playerCache.stats && futureCorpse.stats) {
       state.playerCache.stats.exp =
         state.playerCache.stats?.exp + futureCorpse.stats?.exp;
@@ -24,8 +22,8 @@ export class CombatSystem {
     futureCorpse.collision = false;
     futureCorpse.stats = undefined;
     futureCorpse.ai = undefined;
-    futureCorpse.name += ' (corpse)';
-    futureCorpse.glyph = new Glyph('x', Color.White);
+    futureCorpse.name += " (corpse)";
+    futureCorpse.glyph = new Glyph("x", Color.White);
 
     return futureCorpse;
   }
@@ -42,7 +40,7 @@ export class CombatSystem {
 
   private applyDamage(
     creature: Entity,
-    incDamage: { source: string; damage: number },
+    incDamage: { source: string; damage: number }
   ) {
     if (creature && creature.stats) {
       creature.stats.hp = creature.stats.hp - incDamage.damage;
@@ -60,10 +58,10 @@ export class CombatSystem {
         this.applyDamage(e, incDamage);
         Log.addEntryLow(
           e.name +
-            ' was hit for ' +
+            " was hit for " +
             incDamage.damage +
-            ' by ' +
-            incDamage.source,
+            " by " +
+            incDamage.source
         );
 
         //confim if target is alive, if dead, makes a corpse;

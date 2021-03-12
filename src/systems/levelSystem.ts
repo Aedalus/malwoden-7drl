@@ -1,13 +1,16 @@
 import { Stage } from "../stage";
 import { Log } from "../logs";
 
+export function getEXPForLevel(level: number) {
+  return ((level * (level + 1)) / 2) * 100;
+}
 export class LevelSystem {
   loop(stage: Stage) {
     const player = stage.entites.find((x) => x.player);
     if (player && player.stats) {
       const level = player.stats.level;
       const exp = player.stats.exp;
-      const equa = ((level * (level + 1)) / 2) * 100;
+      const equa = getEXPForLevel(level);
       if (equa <= exp) {
         // this should generate a random chance at stats later down the line to provide a more mixed play. Or let the player choose the stats.
         Log.addEntryHigh("You have leveled up!");
