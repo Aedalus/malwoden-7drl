@@ -1,9 +1,9 @@
-import * as Prefab from "../prefabs";
-import { Stage } from "../stage";
-import { Generation, Rand, Vector2 } from "malwoden";
-import { Terrain } from "../terrain";
-import { strokeTable } from "./helpers";
-import { Entity } from "../entities";
+import * as Prefab from '../prefabs';
+import { Stage } from '../stage';
+import { Generation, Rand, Vector2 } from 'malwoden';
+import { Terrain } from '../terrain';
+import { strokeTable } from './helpers';
+import { Entity } from '../entities';
 
 interface Stage2Config {
   name: string;
@@ -17,7 +17,7 @@ export function generateStage2(
   width: number,
   height: number,
   createPlayer: boolean,
-  config: Stage2Config
+  config: Stage2Config,
 ): Stage {
   //generate seed
   // Generate Terrain
@@ -26,7 +26,7 @@ export function generateStage2(
   const map = new Generation.DrunkardsWalk({
     width: map_width,
     height: map_height,
-    topology: "four",
+    topology: 'four',
   });
   map.walkSteps({
     steps: Infinity,
@@ -64,9 +64,6 @@ export function generateStage2(
     let e = rng.nextItem([
       Prefab.getAnts({ position: randomOpen[rngPos++] }),
       Prefab.getAnts({ position: randomOpen[rngPos++] }),
-      Prefab.getAnts({ position: randomOpen[rngPos++] }),
-      Prefab.getAnts({ position: randomOpen[rngPos++] }),
-      Prefab.getScorpion({ position: randomOpen[rngPos++] }),
       Prefab.getSnake({ position: randomOpen[rngPos++] }),
     ])!;
     entities.push(e);

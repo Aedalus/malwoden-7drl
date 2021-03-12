@@ -1,6 +1,6 @@
-import { Entity } from "./entities";
-import { Util, Vector2 } from "malwoden";
-import { Terrain } from "./terrain";
+import { Entity } from './entities';
+import { Util, Vector2 } from 'malwoden';
+import { Terrain } from './terrain';
 
 export const map_width = 52;
 export const map_height = 38;
@@ -17,7 +17,7 @@ export class Stage {
     name: string,
     map: Util.Table<Terrain>,
     entities: Entity[],
-    startPos: Vector2
+    startPos: Vector2,
   ) {
     this.name = name;
     this.map = map;

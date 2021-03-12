@@ -1,9 +1,9 @@
-import * as Prefab from "../prefabs";
-import { Stage } from "../stage";
-import { Generation, Rand, Vector2 } from "malwoden";
-import { Terrain } from "../terrain";
-import { strokeTable } from "./helpers";
-import { Entity } from "../entities";
+import * as Prefab from '../prefabs';
+import { Stage } from '../stage';
+import { Generation, Rand, Vector2 } from 'malwoden';
+import { Terrain } from '../terrain';
+import { strokeTable } from './helpers';
+import { Entity } from '../entities';
 
 interface Stage1Config {
   name: string;
@@ -15,7 +15,7 @@ export function generateStage1(
   width: number,
   height: number,
   createPlayer: boolean,
-  config: Stage1Config
+  config: Stage1Config,
 ): Stage {
   //generate seed
   // Generate Terrain
@@ -27,6 +27,7 @@ export function generateStage1(
   });
   map.randomize(0.63);
   map.doSimulationStep(3);
+  map.connect();
   strokeTable(map.table, Terrain.tree);
 
   const open: Vector2[] = [];

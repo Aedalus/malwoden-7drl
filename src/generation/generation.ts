@@ -27,13 +27,13 @@ export function selectStage(stage: number): Stage {
       return generateStage1(map_width, map_height, true, {
         name: 'The Short Grass',
         enemies: 7,
-        books: 2,
-        berries: 10,
+        books: 1,
+        berries: 2,
       });
     case 2:
       return generateStage1(map_width, map_height, false, {
         name: 'The Tall Grass',
-        enemies: 15,
+        enemies: 10,
         books: 1,
         berries: 2,
       });
@@ -48,10 +48,10 @@ export function selectStage(stage: number): Stage {
     case 4:
       return generateStage2(map_width, map_height, false, {
         name: 'The Scorpion Den',
-        enemies: 3,
-        scorpions: 7,
-        berries: 5,
-        books: 1,
+        enemies: 15,
+        scorpions: 2,
+        berries: 10,
+        books: 3,
       });
 
     default:

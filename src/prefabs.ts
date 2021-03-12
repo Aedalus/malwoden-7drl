@@ -42,8 +42,8 @@ export function getMantis(options: EntityOptions): Entity {
     collision: true,
     vision: 6,
     stats: {
-      hp: 4,
-      maxHp: 4,
+      hp: 3,
+      maxHp: 3,
       level: 1,
       attack: 3,
       armor: 2,
@@ -92,7 +92,7 @@ export function getScorpion(options: EntityOptions): Entity {
       hp: 20,
       maxHp: 20,
       level: 1,
-      attack: 10,
+      attack: 7,
       armor: 5,
       exp: 50,
     },
@@ -107,10 +107,7 @@ export function getAnts(options: EntityOptions): Entity {
     position: options.position,
     renderPriority: 2,
     //glyph: Glyph.fromCharCode(CharCode.mUpper, Color.Orange),
-    glyph: Glyph.fromCharCode(
-      CharCode.greekSmallLetterEpsilon,
-      Color.AliceBlue,
-    ),
+    glyph: Glyph.fromCharCode(CharCode.caret, Color.AliceBlue),
     ai: 'wander',
     collision: true,
     vision: 6,
@@ -118,9 +115,9 @@ export function getAnts(options: EntityOptions): Entity {
       hp: 6,
       maxHp: 6,
       level: 1,
-      attack: 5,
-      armor: 5,
-      exp: 30,
+      attack: 4,
+      armor: 3,
+      exp: 50,
     },
   };
 }
@@ -137,12 +134,12 @@ export function getSnake(options: EntityOptions): Entity {
     collision: true,
     vision: 6,
     stats: {
-      hp: 10,
-      maxHp: 10,
+      hp: 5,
+      maxHp: 5,
       level: 1,
-      attack: 10,
+      attack: 5,
       armor: 3,
-      exp: 40,
+      exp: 70,
     },
   };
 }
@@ -180,8 +177,8 @@ export function getPlayer(options: EntityOptions): Entity {
     vision: 7,
     collision: true,
     stats: {
-      hp: 10,
-      maxHp: 10,
+      hp: 15,
+      maxHp: 15,
       level: 1,
       attack: 3,
       armor: 1,
@@ -245,7 +242,7 @@ export function getBook(options: EntityOptions): Entity {
 export function getMysticShell(options: EntityOptions): Entity {
   return {
     id: Math.random().toString(),
-    name: "The Mystic Shell!",
+    name: 'The Mystic Shell!',
     position: options.position,
     renderPriority: 4,
     glyph: Glyph.fromCharCode(CharCode.at, Color.MediumPurple),
