@@ -1,6 +1,6 @@
 import { Input } from "malwoden";
 import { Direction } from "../globals";
-import { Level } from "../level";
+import { Stage } from "../stage";
 
 enum PlayerInput {
   NONE,
@@ -42,9 +42,9 @@ export class InputSystem {
   }
 
   // Returns true if player input was detected
-  loop(level: Level): boolean {
+  loop(stage: Stage): boolean {
     if (this.currentPlayerInput === PlayerInput.NONE) return false;
-    const player = level.entites.find((x) => x.player)!;
+    const player = stage.entites.find((x) => x.player)!;
 
     let wasInput = false;
 

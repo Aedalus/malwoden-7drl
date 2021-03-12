@@ -8,7 +8,6 @@ interface Stats {
   maxHp: number;
   level: number;
   attack: number;
-  speed: number;
   armor: number;
   exp: number;
 }
@@ -34,6 +33,11 @@ export interface Entity {
   droppedItem?: Item;
   inventory?: Map<number, Item>;
   wantsToMove?: Direction;
+
+  consumable?: {
+    hp?: number;
+    exp?: number;
+  };
 
   vision?: number;
   viewShed?: {

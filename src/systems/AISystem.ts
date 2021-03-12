@@ -1,7 +1,7 @@
 import { Rand, Pathfinding, Vector2 } from "malwoden";
 import { Entity } from "../entities";
 import { Direction, state } from "../globals";
-import { Level, TerrainCollision } from "../level";
+import { Stage, TerrainCollision } from "../stage";
 
 export class AISystem {
   rng = new Rand.AleaRNG();
@@ -16,8 +16,8 @@ export class AISystem {
     ]);
   }
 
-  loop(level: Level) {
-    for (let e of level.entites) {
+  loop(stage: Stage) {
+    for (let e of stage.entites) {
       if (e.ai === "chase") {
         this.chaseAI(e);
       } else if (e.ai === "wander") {
@@ -36,7 +36,7 @@ export class AISystem {
           if (pos.x === playerPos.x && pos.y === playerPos.y) return false;
 
           // Check terrain
-          const terrain = state.level.map.get(pos);
+          const terrain = state.stage.map.get(pos);
           if (terrain && TerrainCollision[terrain]) return true;
 
           // Default not blocked

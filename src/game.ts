@@ -8,9 +8,11 @@ import { AISystem } from "./systems/AISystem";
 import { StairSystem } from "./systems/StairSystem";
 import { CacheSystem } from "./systems/CacheSystem";
 import { CombatSystem } from "./systems/CombatSystem";
-
-import { map_width, map_height, state } from "./globals";
+import { map_height, map_width } from "./stage";
+import { state } from "./globals";
 import { ViewSystem } from "./systems/ViewSystem";
+import { LevelSystem } from "./systems/levelSystem";
+import { ConsumableSystem } from "./systems/ConsumableSystem";
 
 // Globals
 let terminal: Terminal.RetroTerminal;
@@ -25,6 +27,8 @@ const stairSystem = new StairSystem();
 const cacheSystem = new CacheSystem();
 const viewSystem = new ViewSystem();
 const combatSystem = new CombatSystem();
+const levelSystem = new LevelSystem();
+const consumableSystem = new ConsumableSystem();
 
 let currentGameState = GameState.GAME_START;
 
@@ -32,11 +36,11 @@ export function init(term: Terminal.RetroTerminal) {
   terminal = term;
   mapTerminal = terminal.port({ x: 17, y: 1 }, map_width, map_height);
 
-  Log.addEntry("Game Start!");
+  Log.addEntryHigh("Game Start!");
 
   // Render once to start
   renderSystem.loop({
-    level: state.level,
+    stage: state.stage,
     mapTerminal,
     terminal,
   });
@@ -48,18 +52,20 @@ export function loop() {
 
   // Input System
   if (currentGameState === GameState.AWAITING_INPUT) {
-    const wasInput = inputSystem.loop(state.level);
+    const wasInput = inputSystem.loop(state.stage);
     if (wasInput) currentGameState = GameState.PLAYER_TURN;
   }
 
   // Logic Systems
-  movementSystem.loop(state.level);
-  stairSystem.loop(state.level);
-  viewSystem.loop(state.level);
-  combatSystem.loop(state.level);
+  movementSystem.loop(state.stage);
+  consumableSystem.loop(state.stage);
+  stairSystem.loop(state.stage);
+  viewSystem.loop(state.stage);
+  combatSystem.loop(state.stage);
+  levelSystem.loop(state.stage);
 
   if (currentGameState === GameState.ENEMY_TURN) {
-    aiSystem.loop(state.level);
+    aiSystem.loop(state.stage);
   }
 
   // Transition between needed states
@@ -75,7 +81,7 @@ export function loop() {
 
   // Render comes very last
   renderSystem.loop({
-    level: state.level,
+    stage: state.stage,
     mapTerminal,
     terminal,
   });
