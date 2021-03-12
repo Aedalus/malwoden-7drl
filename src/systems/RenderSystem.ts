@@ -219,21 +219,41 @@ function drawLabel(
   pos: Vector2,
   text: string
 ) {
-  const textPos = {
-    x: pos.x + 3,
-    y: pos.y,
-  };
-  terminal.drawCharCode(
-    { x: pos.x + 1, y: pos.y },
-    CharCode.leftwardsArrow,
-    Color.DarkSlateGray,
-    Color.White
-  );
-  terminal.drawCharCode(
-    { x: pos.x + 2, y: pos.y },
-    CharCode.blackSquare,
-    Color.White,
-    Color.DarkSlateGray
-  );
-  terminal.writeAt(textPos, text, Color.White, Color.DarkSlateGray);
+  if (pos.x < 50) {
+    const textPos = { x: pos.x + 3, y: pos.y };
+    terminal.drawCharCode(
+      { x: pos.x + 1, y: pos.y },
+      CharCode.leftwardsArrow,
+      Color.DarkSlateGray,
+      Color.White
+    );
+    terminal.drawCharCode(
+      { x: pos.x + 2, y: pos.y },
+      CharCode.blackSquare,
+      Color.White,
+      Color.DarkSlateGray
+    );
+    terminal.writeAt(textPos, text, Color.White, Color.DarkSlateGray);
+  } else {
+    terminal.drawCharCode(
+      {
+        x: pos.x - 1,
+        y: pos.y,
+      },
+      CharCode.rightwardsArrow,
+      Color.DarkSlateGray,
+      Color.White
+    );
+    terminal.drawCharCode(
+      {
+        x: pos.x - 2,
+        y: pos.y,
+      },
+      CharCode.blackSquare,
+      Color.White,
+      Color.DarkSlateGray
+    );
+    const textPos = { x: pos.x - 2 - text.length, y: pos.y };
+    terminal.writeAt(textPos, text, Color.White, Color.DarkSlateGray);
+  }
 }
