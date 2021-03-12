@@ -1,5 +1,5 @@
 import { Input } from "malwoden";
-import { Direction } from "../globals";
+import { Direction, GameState, restart } from "../globals";
 import { Stage } from "../stage";
 import { state } from "../globals";
 
@@ -66,6 +66,10 @@ export class InputSystem {
     if (this.currentPlayerInput === PlayerInput.ESC) {
       if (state.help) {
         state.help = false;
+      }
+      if (state.currentGameState === GameState.GAME_WIN) {
+        console.log("restart!");
+        restart();
       }
       wasInput = false;
     } else if (this.currentPlayerInput === PlayerInput.SPACE) {

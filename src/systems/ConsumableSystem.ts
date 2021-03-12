@@ -1,11 +1,15 @@
 import { Stage } from "../stage";
-import { state } from "../globals";
+import { GameState, state } from "../globals";
 import { Log } from "../logs";
 
 export class ConsumableSystem {
   loop(stage: Stage) {
     const player = state.playerCache!;
-    for (let e of stage.entites) {
+
+    const entitesOnSpace =
+      state.posCache.get(`${player.position.x}:${player.position.y}`) || [];
+
+    for (let e of entitesOnSpace) {
       if (e.consumable) {
         if (
           e.position.x === player.position.x &&
@@ -28,6 +32,11 @@ export class ConsumableSystem {
               `You read a ${e.name} and gained ${e.consumable.exp} exp!`
             );
             player.stats!.exp += e.consumable.exp;
+            consumed = true;
+          }
+
+          if (e.consumable.winCondition) {
+            state.currentGameState = GameState.GAME_WIN;
             consumed = true;
           }
 
