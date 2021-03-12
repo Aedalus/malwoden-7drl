@@ -59,7 +59,7 @@ export class MovementSystem {
   // Converts a movement into a melee attack if applicable
   checkCombat(currentEntity: Entity, blockingEntities: Entity[]) {
     const otherFactionEntity = blockingEntities.find(
-      (x) => x.enemy !== currentEntity.enemy
+      (x) => x.enemy !== currentEntity.enemy && x.stats
     );
 
     if (otherFactionEntity && otherFactionEntity.stats) {
