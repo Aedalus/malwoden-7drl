@@ -1,14 +1,14 @@
-import * as Prefab from "../prefabs";
-import { Stage } from "../stage";
-import { Generation, Rand, Vector2 } from "malwoden";
-import { Terrain } from "../terrain";
-import { strokeTable } from "./helpers";
-import { Entity } from "../entities";
+import * as Prefab from '../prefabs';
+import { Stage } from '../stage';
+import { Generation, Rand, Vector2 } from 'malwoden';
+import { Terrain } from '../terrain';
+import { strokeTable } from './helpers';
+import { Entity } from '../entities';
 
 export function generateStage3(
   width: number,
   height: number,
-  createPlayer: boolean
+  createPlayer: boolean,
 ): Stage {
   //generate seed
   // Generate Terrain
@@ -50,5 +50,5 @@ export function generateStage3(
   // Generate Stairs
   entities.push(Prefab.getStairs({ position: randomOpen[11] }));
   // Create level
-  return new Stage("The Crypt", map.table, entities, startPos);
+  return new Stage('The Crypt', map.table, entities, startPos);
 }

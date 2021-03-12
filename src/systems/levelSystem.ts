@@ -14,10 +14,9 @@ export class LevelSystem {
         const bonus = Math.round(Math.random());
         player.stats.hp = player.stats.hp + 2 + bonus;
         player.stats.maxHp = player.stats.maxHp + 2 + bonus;
-        player.stats.attack =
-          player.stats.attack + 1 + Math.round(Math.random());
-        player.stats.armor = player.stats.armor + 1 + Math.round(Math.random());
-        player.stats.level = player.stats.level + 1 + Math.round(Math.random());
+        player.stats.attack = player.stats.attack + 1;
+        player.stats.armor = player.stats.armor + 1;
+        player.stats.level = player.stats.level + 1;
       }
     }
   }
