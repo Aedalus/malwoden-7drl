@@ -1,6 +1,7 @@
 import { Vector2 } from "malwoden";
 import { Direction, state } from "../globals";
-import { Stage, TerrainCollision } from "../stage";
+import { Stage } from "../stage";
+import { TerrainCollision } from "../terrain";
 import { Entity } from "../entities";
 import { dealDamage } from "../damageFunction";
 
