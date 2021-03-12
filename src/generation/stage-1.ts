@@ -70,6 +70,9 @@ export function generateStage1(
     entities.push(book);
   }
 
+  // Tmp, generate mystic shell
+  entities.push(Prefab.getMysticShell({ position: randomOpen[rngPos++] }));
+
   // Create level
   return new Stage(config.name, map.table, entities, startPos);
 }

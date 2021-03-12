@@ -2,12 +2,15 @@ import { Entity } from "./entities";
 import { Stage } from "./stage";
 import { selectStage } from "./generation/generation";
 import { Rand } from "malwoden";
+import { Log } from "./logs";
 
 export enum GameState {
   GAME_START,
   PLAYER_TURN,
   ENEMY_TURN,
   AWAITING_INPUT,
+  GAME_WIN,
+  GAME_LOSS,
 }
 
 export enum Direction {
@@ -25,6 +28,7 @@ interface GlobalState {
   posCache: Map<string, Entity[]>;
   playerCache: Entity | undefined;
   help: boolean;
+  currentGameState: GameState;
 }
 
 export const state: GlobalState = {
@@ -40,4 +44,14 @@ export const state: GlobalState = {
   playerCache: undefined,
   // Toggle Help Screen
   help: true,
+  // The state of the game
+  currentGameState: GameState.GAME_START,
 };
+
+export function restart() {
+  Log.addEntryHigh("You are reborn. Let the snailing continue!");
+  state.stageCount = 1;
+  const newLevel = selectStage(state.stageCount);
+  state.stage = newLevel;
+  state.currentGameState = GameState.GAME_START;
+}

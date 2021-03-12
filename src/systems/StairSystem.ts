@@ -1,4 +1,4 @@
-import { state } from "../globals";
+import { restart, state } from "../globals";
 import { Stage } from "../stage";
 import { Log } from "../logs";
 import { selectStage } from "../generation/generation";
@@ -14,12 +14,7 @@ export class StairSystem {
         s.position.y === player.position.y
       ) {
         if (s.restart) {
-          Log.addEntryHigh("You are reborn. Let the snailing continue!");
-          state.stageCount = 1;
-          const newLevel = selectStage(state.stageCount);
-          state.stage = newLevel;
-          player.position.x = newLevel.startPos.x;
-          player.position.y = newLevel.startPos.y;
+          restart();
         } else {
           Log.addEntryMid("Descending the stairs");
           state.stageCount++;

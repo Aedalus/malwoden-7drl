@@ -2,7 +2,7 @@ import { Terminal, GUI, Input, Color, CharCode, Vector2 } from "malwoden";
 import { Stage } from "../stage";
 import { FOWTerrainGlyphs, TerrainGlyphs } from "../terrain";
 import { Log, LogLevel } from "../logs";
-import { state } from "../globals";
+import { GameState, state } from "../globals";
 import { Entity } from "../entities";
 
 interface RenderSystemContext {
@@ -192,6 +192,10 @@ export class RenderSystem {
       }
     }
 
+    if (state.currentGameState === GameState.GAME_WIN) {
+      renderWon(mapTerminal);
+    }
+
     // Render Help
     if (state.help) {
       renderHelp(terminal);
@@ -312,4 +316,71 @@ function renderHelp(terminal: Terminal.BaseTerminal) {
   const qY = 45;
   terminal.writeAt({ x: qX, y: qY }, "Press (esc) to ");
   terminal.writeAt({ x: qX + 15, y: qY }, "@_,", Color.Yellow);
+}
+
+const winAnim = {
+  faceRight: true,
+  dX: 0,
+};
+
+setInterval(() => {
+  if (state.currentGameState !== GameState.GAME_WIN) {
+    winAnim.faceRight = true;
+    winAnim.dX = 0;
+    return;
+  }
+  if (winAnim.faceRight) {
+    if (winAnim.dX < 25) {
+      winAnim.dX++;
+    } else {
+      winAnim.faceRight = false;
+    }
+  } else {
+    if (winAnim.dX > 0) {
+      winAnim.dX--;
+    } else {
+      winAnim.faceRight = true;
+    }
+  }
+}, 150);
+
+function renderWon(terminal: Terminal.PortTerminal) {
+  terminal.clear();
+
+  const wX = 12;
+  const wY = 15;
+
+  terminal.writeAt({ x: wX, y: wY }, "Mal", Color.Yellow);
+  terminal.writeAt({ x: wX + 4, y: wY }, "found the");
+  terminal.writeAt({ x: wX + 14, y: wY }, "Mystic Shell!", Color.MediumPurple);
+
+  const mX = 12;
+  const mY = 10;
+
+  if (winAnim.faceRight) {
+    terminal.writeAt({ x: mX + winAnim.dX, y: mY }, "@", Color.MediumPurple);
+    terminal.writeAt({ x: mX + 1 + winAnim.dX, y: mY }, "_,", Color.Yellow);
+  } else {
+    terminal.writeAt({ x: mX - 3 + winAnim.dX, y: mY }, ",_", Color.Yellow);
+    terminal.writeAt(
+      { x: mX - 1 + winAnim.dX, y: mY },
+      "@",
+      Color.MediumPurple
+    );
+  }
+
+  terminal.writeAt(
+    { x: 5, y: 20 },
+    "With the shell's wisdom, the snail kingdom"
+  );
+  terminal.writeAt({ x: 7, y: 22 }, "would propser under a new golden age.");
+  terminal.writeAt({ x: 12, y: 26 }, "Not the fastest golden age,");
+  terminal.writeAt({ x: 15, y: 28 }, "but good nonetheless.");
+
+  // Quit
+  const qX = 25;
+  const qY = 35;
+  terminal.writeAt({ x: qX, y: qY }, "Press (esc) to ");
+  terminal.writeAt({ x: qX + 15, y: qY }, "@_,", Color.Yellow);
+  terminal.writeAt({ x: qX + 19, y: qY }, "again!");
 }

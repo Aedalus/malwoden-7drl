@@ -242,4 +242,17 @@ export function getBook(options: EntityOptions): Entity {
   };
 }
 
+export function getMysticShell(options: EntityOptions): Entity {
+  return {
+    id: Math.random().toString(),
+    name: "The Mystic Shell!",
+    position: options.position,
+    renderPriority: 4,
+    glyph: Glyph.fromCharCode(CharCode.at, Color.MediumPurple),
+    consumable: {
+      winCondition: true,
+    },
+  };
+}
+
 //traps

@@ -30,8 +30,6 @@ const combatSystem = new CombatSystem();
 const levelSystem = new LevelSystem();
 const consumableSystem = new ConsumableSystem();
 
-let currentGameState = GameState.GAME_START;
-
 export function init(term: Terminal.RetroTerminal) {
   terminal = term;
   mapTerminal = terminal.port({ x: 17, y: 1 }, map_width, map_height);
@@ -50,10 +48,21 @@ export function loop() {
   // Cache System should always run first to build up cache
   cacheSystem.loop();
 
+  if (state.currentGameState === GameState.GAME_WIN) {
+    // Input, render, return
+    inputSystem.loop(state.stage);
+    renderSystem.loop({
+      stage: state.stage,
+      mapTerminal,
+      terminal,
+    });
+    return;
+  }
+
   // Input System
-  if (currentGameState === GameState.AWAITING_INPUT) {
+  if (state.currentGameState === GameState.AWAITING_INPUT) {
     const wasInput = inputSystem.loop(state.stage);
-    if (wasInput) currentGameState = GameState.PLAYER_TURN;
+    if (wasInput) state.currentGameState = GameState.PLAYER_TURN;
   }
 
   // Logic Systems
@@ -64,19 +73,19 @@ export function loop() {
   combatSystem.loop(state.stage);
   levelSystem.loop(state.stage);
 
-  if (currentGameState === GameState.ENEMY_TURN) {
+  if (state.currentGameState === GameState.ENEMY_TURN) {
     aiSystem.loop(state.stage);
   }
 
   // Transition between needed states
   // Keep logic above, this is just for automatic
   // transitions between states
-  if (currentGameState === GameState.GAME_START) {
-    currentGameState = GameState.AWAITING_INPUT;
-  } else if (currentGameState === GameState.PLAYER_TURN) {
-    currentGameState = GameState.ENEMY_TURN;
-  } else if (currentGameState === GameState.ENEMY_TURN) {
-    currentGameState = GameState.AWAITING_INPUT;
+  if (state.currentGameState === GameState.GAME_START) {
+    state.currentGameState = GameState.AWAITING_INPUT;
+  } else if (state.currentGameState === GameState.PLAYER_TURN) {
+    state.currentGameState = GameState.ENEMY_TURN;
+  } else if (state.currentGameState === GameState.ENEMY_TURN) {
+    state.currentGameState = GameState.AWAITING_INPUT;
   }
 
   // Render comes very last

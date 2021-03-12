@@ -37,6 +37,7 @@ export interface Entity {
   consumable?: {
     hp?: number;
     exp?: number;
+    winCondition?: boolean;
   };
 
   vision?: number;
