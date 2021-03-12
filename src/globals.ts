@@ -1,5 +1,6 @@
 import { Entity } from "./entities";
-import { Stage, selectStage } from "./stage";
+import { Stage } from "./stage";
+import { selectStage } from "./generation/generation";
 import { Rand } from "malwoden";
 
 export enum GameState {

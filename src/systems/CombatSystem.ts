@@ -1,5 +1,6 @@
 import { Entity } from "../entities";
-import { Stage, getEndLevel } from "../stage";
+import { Stage } from "../stage";
+import { getEndLevel } from "../generation/generation";
 import { Log } from "../logs";
 import { state } from "../globals";
 import { Glyph, Color } from "malwoden";

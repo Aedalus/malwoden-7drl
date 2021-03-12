@@ -1,7 +1,8 @@
 import { Rand, Pathfinding, Vector2 } from "malwoden";
 import { Entity } from "../entities";
 import { Direction, state } from "../globals";
-import { Stage, TerrainCollision } from "../stage";
+import { Stage } from "../stage";
+import { TerrainCollision } from "../terrain";
 
 export class AISystem {
   rng = new Rand.AleaRNG();
