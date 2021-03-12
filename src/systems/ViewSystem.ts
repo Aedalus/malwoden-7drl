@@ -1,6 +1,7 @@
 import { FOV, Vector2 } from "malwoden";
-import { Stage, TerrainBlocksVision } from "../stage";
+import { Stage } from "../stage";
 import { state } from "../globals";
+import { TerrainBlocksVision } from "../terrain";
 
 export class ViewSystem {
   fov = new FOV.PreciseShadowcasting({

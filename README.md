@@ -1,14 +1,6 @@
 ## ToDo
 
-<!-- - Collisions (Josh) -->
-- Add more enemies (Josh)
-<!-- - Stats (Josh) -->
-  <!-- - Global State (Alex) -->
-  <!-- - Log System (Alex) -->
-
-- Multiple Levels
+- Balance out map
+- Fix end level
+- 3rd biome
 - Win condition
-<!-- - Lose condition -->
-- Combat
-
-- Inventory Modal (Alex)

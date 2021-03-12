@@ -1,6 +1,7 @@
-import { Stage, selectStage } from "../stage";
 import { restart, state } from "../globals";
+import { Stage } from "../stage";
 import { Log } from "../logs";
+import { selectStage } from "../generation/generation";
 
 export class StairSystem {
   loop(stage: Stage) {

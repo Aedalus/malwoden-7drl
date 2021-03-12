@@ -1,5 +1,6 @@
 import { Terminal, GUI, Input, Color, CharCode, Vector2 } from "malwoden";
-import { FOWTerrainGlyphs, Stage, TerrainGlyphs } from "../stage";
+import { Stage } from "../stage";
+import { FOWTerrainGlyphs, TerrainGlyphs } from "../terrain";
 import { Log, LogLevel } from "../logs";
 import { GameState, state } from "../globals";
 import { Entity } from "../entities";
@@ -191,7 +192,7 @@ export class RenderSystem {
       }
     }
 
-    if (state.currentGameState == GameState.GAME_WIN) {
+    if (state.currentGameState === GameState.GAME_WIN) {
       renderWon(mapTerminal);
     }
 

@@ -90,7 +90,7 @@ export function getScorpion(options: EntityOptions): Entity {
     vision: 6,
     stats: {
       hp: 20,
-      maxHp: 0,
+      maxHp: 20,
       level: 1,
       attack: 8,
       armor: 4,
@@ -237,7 +237,7 @@ export function getBook(options: EntityOptions): Entity {
     renderPriority: 4,
     glyph: Glyph.fromCharCode(CharCode.equals, Color.Brown),
     consumable: {
-      exp: 50,
+      exp: amount,
     },
   };
 }
