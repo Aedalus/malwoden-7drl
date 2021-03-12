@@ -1,6 +1,7 @@
 import { Input } from "malwoden";
 import { Direction } from "../globals";
 import { Stage } from "../stage";
+import { state } from "../globals";
 
 enum PlayerInput {
   NONE,
@@ -9,6 +10,8 @@ enum PlayerInput {
   LEFT,
   RIGHT,
   SPACE,
+  ESC,
+  HELP,
 }
 
 export class InputSystem {
@@ -36,6 +39,14 @@ export class InputSystem {
       .onDown(
         Input.KeyCode.Space,
         () => (this.currentPlayerInput = PlayerInput.SPACE)
+      )
+      .onDown(
+        Input.KeyCode.Escape,
+        () => (this.currentPlayerInput = PlayerInput.ESC)
+      )
+      .onDown(
+        Input.KeyCode.H,
+        () => (this.currentPlayerInput = PlayerInput.HELP)
       );
 
     keyboard.setContext(movement);
@@ -48,7 +59,17 @@ export class InputSystem {
 
     let wasInput = false;
 
-    if (this.currentPlayerInput === PlayerInput.SPACE) {
+    if (this.currentPlayerInput === PlayerInput.HELP) {
+      state.help = true;
+      wasInput = false;
+    }
+    if (this.currentPlayerInput === PlayerInput.ESC) {
+      if (state.help) {
+        state.help = false;
+      }
+      wasInput = false;
+    } else if (this.currentPlayerInput === PlayerInput.SPACE) {
+      // Normal Movement!
       // Space to wait
       wasInput = true;
     } else if (this.currentPlayerInput === PlayerInput.UP) {

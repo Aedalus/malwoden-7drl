@@ -1,6 +1,6 @@
 import { Entity } from "./entities";
 import { Stage, selectStage } from "./stage";
-import { Rand } from 'malwoden'
+import { Rand } from "malwoden";
 
 export enum GameState {
   GAME_START,
@@ -23,6 +23,7 @@ interface GlobalState {
   stage: Stage;
   posCache: Map<string, Entity[]>;
   playerCache: Entity | undefined;
+  help: boolean;
 }
 
 export const state: GlobalState = {
@@ -36,4 +37,6 @@ export const state: GlobalState = {
   // Allows quick lookup of player entity.
   // Should not be changed outside the cache system
   playerCache: undefined,
+  // Toggle Help Screen
+  help: true,
 };
