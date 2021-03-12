@@ -92,7 +92,7 @@ export function getScorpion(options: EntityOptions): Entity {
       hp: 10,
       maxHp: 10,
       level: 1,
-      attack: 6,
+      attack: 7,
       armor: 4,
       exp: 50,
     },
