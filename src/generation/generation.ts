@@ -1,25 +1,8 @@
-import { Util } from "malwoden";
 import { map_height, map_width, Stage } from "../stage";
-import { Terrain } from "../terrain";
-import * as Prefab from "../prefabs";
-import { Entity } from "../entities";
 
 import { generateStage1 } from "./stage-1";
 import { generateStage2 } from "./stage-2";
 import { generateStage3 } from "./stage-3";
-
-export function getEndLevel() {
-  const width = 40;
-  const height = 40;
-  const table = new Util.Table<Terrain>(width, height);
-
-  const entities: Entity[] = [];
-
-  entities.push(Prefab.getPlayer({ position: { x: 16, y: 18 } }));
-  entities.push(Prefab.getRestartStairs({ position: { x: 38, y: 18 } }));
-
-  return new Stage("The End", table, entities, { x: 20, y: 20 });
-}
 
 export function selectStage(stage: number): Stage {
   switch (stage) {
@@ -53,8 +36,6 @@ export function selectStage(stage: number): Stage {
         berries: 5,
         books: 3,
       });
-
-    default:
-      return getEndLevel();
   }
+  throw new Error("Stage ID not recognized!");
 }

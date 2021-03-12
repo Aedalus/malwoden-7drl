@@ -67,8 +67,10 @@ export class InputSystem {
       if (state.help) {
         state.help = false;
       }
-      if (state.currentGameState === GameState.GAME_WIN) {
-        console.log("restart!");
+      if (
+        state.currentGameState === GameState.GAME_WIN ||
+        state.currentGameState === GameState.GAME_LOSS
+      ) {
         restart();
       }
       wasInput = false;
