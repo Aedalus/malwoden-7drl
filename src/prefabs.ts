@@ -47,7 +47,7 @@ export function getMantis(options: EntityOptions): Entity {
       level: 1,
       attack: 3,
       armor: 2,
-      exp: 40,
+      exp: 20,
     },
   };
 }
@@ -160,7 +160,7 @@ export function getLadybug(options: EntityOptions): Entity {
       level: 1,
       attack: 2,
       armor: 2,
-      exp: 20,
+      exp: 10,
     },
   };
 }
