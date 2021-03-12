@@ -7,7 +7,7 @@ function App() {
   const requestRef = React.useRef<number>(NaN);
 
   useEffect(() => {
-    const mount = document.getElementById("example")!;
+    const mount = document.getElementById("malwoden")!;
     const terminal = new Terminal.RetroTerminal({
       width: 70,
       height: 50,
@@ -26,7 +26,12 @@ function App() {
     requestRef.current = window.requestAnimationFrame(loop);
     return () => window.cancelAnimationFrame(requestRef.current);
   }, []);
-  return <div id="malwoden"></div>;
+  return (
+    <div
+      id="malwoden"
+      style={{ display: "flex", justifyContent: "center", paddingTop: "50px" }}
+    ></div>
+  );
 }
 
 export default App;

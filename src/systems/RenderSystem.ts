@@ -47,11 +47,13 @@ export class RenderSystem {
           Color.Red
         );
 
-        terminal.writeAt({ x: 2, y: 7 }, `Level: ${player.stats.level}`);
-        terminal.writeAt({ x: 2, y: 8 }, `Attack: ${player.stats.attack}`);
-        terminal.writeAt({ x: 2, y: 9 }, `Armor: ${player.stats.armor}`);
+        terminal.writeAt({ x: 2, y: 6 }, `Level:  ${player.stats.level}`);
+        terminal.writeAt({ x: 2, y: 7 }, `Attack: ${player.stats.attack}`);
+        terminal.writeAt({ x: 2, y: 8 }, `Armor:  ${player.stats.armor}`);
       }
     }
+
+    terminal.writeAt({ x: 2, y: 18 }, "(h) help");
 
     // -------------------------------------------------------------------------
     // Logs
@@ -189,6 +191,12 @@ export class RenderSystem {
       }
     }
 
+    // Render Help
+    if (state.help) {
+      renderHelp(terminal);
+    }
+
+    // Render Terminal
     terminal.render();
   }
 }
@@ -256,4 +264,51 @@ function drawLabel(
     const textPos = { x: pos.x - 2 - text.length, y: pos.y };
     terminal.writeAt(textPos, text, Color.White, Color.DarkSlateGray);
   }
+}
+
+function renderHelp(terminal: Terminal.BaseTerminal) {
+  GUI.box(terminal, {
+    origin: { x: 2, y: 2 },
+    width: 65,
+    height: 45,
+    title: "Help",
+  });
+
+  // Intro Start X/Y
+  const isX = 5;
+  const isY = 6;
+
+  terminal.writeAt({ x: isX, y: isY }, "Help");
+  terminal.writeAt({ x: isX + 5, y: isY }, "Mal the Snail", Color.Yellow);
+  terminal.writeAt({ x: isX + 19, y: isY }, "travel through the garden,");
+
+  terminal.writeAt({ x: isX, y: isY + 2 }, "and retrieve the ");
+  terminal.writeAt(
+    { x: isX + 17, y: isY + 2 },
+    "Mystic Shell",
+    Color.MediumPurple
+  );
+  terminal.writeAt({ x: isX + 29, y: isY + 2 }, ".");
+
+  // Controls
+
+  const cX = 5;
+  const cY = 12;
+  terminal.writeAt({ x: cX, y: cY }, "-- Controls --", Color.Cyan);
+  terminal.writeAt({ x: cX, y: cY + 2 }, "- Use ↑ ↓ ← → to move.");
+  terminal.writeAt({ x: cX, y: cY + 4 }, "- Use (Space) to skip a turn.");
+  terminal.writeAt(
+    { x: cX, y: cY + 6 },
+    "- Move into an enemy to attack them."
+  );
+  terminal.writeAt(
+    { x: cX, y: cY + 8 },
+    "- Hover over objects to see a description."
+  );
+
+  // Quit
+  const qX = 47;
+  const qY = 45;
+  terminal.writeAt({ x: qX, y: qY }, "Press (esc) to ");
+  terminal.writeAt({ x: qX + 15, y: qY }, "@_,", Color.Yellow);
 }
