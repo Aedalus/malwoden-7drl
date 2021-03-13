@@ -121,14 +121,17 @@ export function generateStage3(
       { x: shellPos.x - 0, y: shellPos.y + 2 },
     ];
 
+    const clearPos = (pos: Vector2) => {
+      if (map.table.isInBounds(pos)) {
+        map.table.set(pos, Terrain.none);
+      }
+    };
     // Clear the outmost ring
     for (let x = -3; x <= 3; x++) {
       for (let y = -3; y <= 3; y++) {
         if (x === 3 || x === -3 || y === 3 || y === -3) {
           const pos = { x: shellPos.x + x, y: shellPos.y + y };
-          if (map.table.isInBounds(pos)) {
-            map.table.set(pos, Terrain.none);
-          }
+          clearPos(pos);
         }
       }
     }
@@ -141,6 +144,7 @@ export function generateStage3(
     }
 
     for (let d of doors) {
+      clearPos(d);
       entities.push(Prefab.getShellGuardian({ position: d }));
     }
   }

@@ -44,8 +44,6 @@ export class CombatSystem {
   ) {
     if (creature && creature.stats) {
       creature.stats.hp = creature.stats.hp - incDamage.damage;
-    } else {
-      throw new Error(`Cannot damage ${creature.name} as it has no stats`);
     }
   }
 

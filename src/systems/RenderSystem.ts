@@ -222,7 +222,7 @@ function drawBar(
   percent: number,
   color: Color
 ) {
-  const filledWidth = Math.ceil(width * percent);
+  const filledWidth = Math.floor(width * percent);
 
   for (let x = 0; x < width; x++) {
     const isFilled = x <= filledWidth;
