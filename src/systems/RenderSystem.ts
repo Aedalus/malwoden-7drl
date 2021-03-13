@@ -50,14 +50,10 @@ export class RenderSystem {
         );
         const expNext = getEXPForLevel(player.stats.level);
         const expLast = getEXPForLevel(player.stats.level - 1);
+        const lvlExp = expNext - expLast;
+        const curExp = player.stats.exp - expLast;
         terminal.writeAt({ x: 2, y: 5 }, `EXP`);
-        drawBar(
-          terminal,
-          { x: 2, y: 6 },
-          10,
-          (player.stats.exp - expLast) / expNext,
-          Color.Gold
-        );
+        drawBar(terminal, { x: 2, y: 6 }, 10, curExp / lvlExp, Color.Gold);
 
         terminal.writeAt({ x: 2, y: 9 }, `Level:  ${player.stats.level}`);
         terminal.writeAt({ x: 2, y: 10 }, `Attack: ${player.stats.attack}`);

@@ -11,7 +11,7 @@ function App() {
     const terminal = new Terminal.RetroTerminal({
       width: 70,
       height: 50,
-      imageURL: "/font_16.png",
+      imageURL: "./font_16.png",
       charWidth: 16,
       charHeight: 16,
       mountNode: mount,

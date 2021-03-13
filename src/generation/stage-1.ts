@@ -1,9 +1,9 @@
-import * as Prefab from '../prefabs';
-import { Stage } from '../stage';
-import { Generation, Rand, Vector2 } from 'malwoden';
-import { Terrain } from '../terrain';
-import { strokeTable } from './helpers';
-import { Entity } from '../entities';
+import * as Prefab from "../prefabs";
+import { Stage } from "../stage";
+import { Generation, Rand, Vector2 } from "malwoden";
+import { Terrain } from "../terrain";
+import { strokeTable } from "./helpers";
+import { Entity } from "../entities";
 
 interface Stage1Config {
   name: string;
@@ -15,7 +15,7 @@ export function generateStage1(
   width: number,
   height: number,
   createPlayer: boolean,
-  config: Stage1Config,
+  config: Stage1Config
 ): Stage {
   //generate seed
   // Generate Terrain
@@ -64,15 +64,11 @@ export function generateStage1(
     const berry = Prefab.getBerry({ position: randomOpen[rngPos++] });
     entities.push(berry);
   }
-
   // Generate book
   for (let i = 0; i < config.books; i++) {
     const book = Prefab.getBook({ position: randomOpen[rngPos++] });
     entities.push(book);
   }
-
-  // Tmp, generate mystic shell
-  entities.push(Prefab.getMysticShell({ position: randomOpen[rngPos++] }));
 
   // Create level
   return new Stage(config.name, map.table, entities, startPos);

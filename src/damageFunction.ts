@@ -1,4 +1,4 @@
-import { Entity } from './entities';
+import { Entity } from "./entities";
 
 function notifyDamage(source: string, power: number, target: Entity) {
   if (!target.incomingDamage) {
@@ -35,7 +35,7 @@ export function dealDamage(source: Entity, target: Entity) {
   let power: number = 0;
   power = attack - defence;
   if (power < 0) {
-    power = 0;
+    power = 1;
   }
   notifyDamage(source.name, power, target);
 }

@@ -23,7 +23,19 @@ export class AISystem {
         this.chaseAI(e);
       } else if (e.ai === "wander") {
         this.wanderAI(e);
+      } else if (e.ai === "guard") {
+        this.guardAI(e);
       }
+    }
+  }
+
+  private guardAI(e: Entity) {
+    const player = state.playerCache!;
+    // Will be undefined unless directly next to player
+    const direction = this.getDirectionFromVectors(e.position, player.position);
+    // If directly next to the player, attack
+    if (direction) {
+      e.wantsToMove = direction;
     }
   }
 
