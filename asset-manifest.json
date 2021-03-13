@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/malwoden-7drl/static/js/main.646813f6.chunk.js",
-    "main.js.map": "/malwoden-7drl/static/js/main.646813f6.chunk.js.map",
+    "main.js": "/malwoden-7drl/static/js/main.41701ca2.chunk.js",
+    "main.js.map": "/malwoden-7drl/static/js/main.41701ca2.chunk.js.map",
     "runtime-main.js": "/malwoden-7drl/static/js/runtime-main.32b39574.js",
     "runtime-main.js.map": "/malwoden-7drl/static/js/runtime-main.32b39574.js.map",
     "static/js/2.09042f9f.chunk.js": "/malwoden-7drl/static/js/2.09042f9f.chunk.js",
@@ -14,6 +14,6 @@
   "entrypoints": [
     "static/js/runtime-main.32b39574.js",
     "static/js/2.09042f9f.chunk.js",
-    "static/js/main.646813f6.chunk.js"
+    "static/js/main.41701ca2.chunk.js"
   ]
 }
